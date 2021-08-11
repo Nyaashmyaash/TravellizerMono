@@ -51,4 +51,33 @@ public class City {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "city", orphanRemoval = true)
     Set<Station> stations;
 
+
+//    /**
+//     * Adds specified station to the city station list
+//     *
+//     * @param station
+//     */
+//    public Station addStation(final TransportType transportType) {
+//        if (stations == null) {
+//            stations = new HashSet<>();
+//        }
+//        Station station = new Station(this, transportType);
+//        stations.add(station);
+//
+//        return station;
+//    }
+//
+//    /**
+//     * Removes specified station from city station list
+//     *
+//     * @param station
+//     */
+//    public void removeStation(final Station station) {
+//        Objects.requireNonNull(station, "station parameter is not initialized");
+//        if (stations == null) {
+//            return;
+//        }
+//        stations.remove(station);
+//    }
+
 }

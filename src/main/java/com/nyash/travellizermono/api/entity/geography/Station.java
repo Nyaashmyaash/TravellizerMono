@@ -1,6 +1,9 @@
 package com.nyash.travellizermono.api.entity.geography;
 
-import java.util.Objects;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+import javax.persistence.*;
 
 /**
  * Station where passengers can get off or take specific kind of transport.
@@ -8,20 +11,39 @@ import java.util.Objects;
  *
  * @author Nyash
  */
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Entity
+@Table(name = "station")
 public class Station {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
+
+    @ManyToOne(cascade = {}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "id")
     City city;
 
+    @Embedded
     Address address;
 
     /**
      * Optional.
      * if station have office
      */
+    @Column(name = "phone")
     String phone;
 
+    @Embedded
     Coordinate coordinate;
 
+    @Enumerated
+    @Column(nullable = false, name = "transport_type")
     TransportType transportType;
 
 }
