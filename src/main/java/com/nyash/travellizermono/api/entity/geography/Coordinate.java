@@ -18,6 +18,7 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Coordinate {
 
+
     @Column(name = "x")
     double x;
 

@@ -20,9 +20,9 @@ import javax.persistence.*;
 @Embeddable
 public class Address {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    Long id;
 
     @NonNull
     @Column(name = "zip_code", length = 10)
