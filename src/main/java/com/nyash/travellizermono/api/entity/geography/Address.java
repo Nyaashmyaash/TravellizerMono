@@ -17,8 +17,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity
-@Table(name = "address")
+@Embeddable
 public class Address {
 
     @Id
@@ -26,21 +25,21 @@ public class Address {
     Long id;
 
     @NonNull
-    @Column(name = "zip_code")
+    @Column(name = "zip_code", length = 10)
     String zipCode;
 
     @NonNull
-    @Column(name = "street")
+    @Column(name = "street", length = 32)
     String street;
 
     @NonNull
-    @Column(name = "house_number")
+    @Column(name = "house_number", length = 16)
     String houseNumber;
 
     /**
      * (Optional) if it's address of the apartment
      */
-    @Column(name = "apartment")
+    @Column(name = "apartment", length = 16)
     String apartment;
 
 }

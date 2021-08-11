@@ -4,7 +4,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 /**
  * Station where passengers can get off or take specific kind of transport.
@@ -12,6 +11,7 @@ import java.util.Objects;
  *
  * @author Nyash
  */
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -29,17 +29,21 @@ public class Station {
     @JoinColumn(name = "id")
     City city;
 
-
+    @Embedded
     Address address;
 
     /**
      * Optional.
      * if station have office
      */
+    @Column(name = "phone")
     String phone;
 
+    @Embedded
     Coordinate coordinate;
 
+    @Enumerated
+    @Column(nullable = false, name = "transport_type")
     TransportType transportType;
 
 }
