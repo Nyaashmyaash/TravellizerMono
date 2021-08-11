@@ -7,5 +7,8 @@ package com.nyash.travellizermono.api.entity.ticket;
  *
  */
 public enum OrderState {
-    CREATED, PENDING, CANCELLED, COMPLETED;
+    CREATED,
+    PENDING,
+    CANCELLED,
+    COMPLETED
 }

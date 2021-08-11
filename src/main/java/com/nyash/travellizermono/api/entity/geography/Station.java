@@ -36,6 +36,7 @@ public class Station {
      * Optional.
      * if station have office
      */
+    @NonNull
     @Column(name = "phone")
     String phone;
 

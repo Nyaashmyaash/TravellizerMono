@@ -1,10 +1,10 @@
 package com.nyash.travellizermono.api.entity.ticket;
 
-import com.nyash.travellizer.common.infra.exception.flow.ReservationException;
-import com.nyash.travellizer.common.model.entity.base.AbstractEntity;
-import com.nyash.travellizer.model.entity.trip.Trip;
-import lombok.Setter;
+import com.nyash.travellizermono.api.common.infra.exception.flow.ReservationException;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
@@ -12,82 +12,68 @@ import java.time.LocalDateTime;
  *
  * @author Nyash
  */
-@Setter
-public class Order extends AbstractEntity {
+@Data
+@Builder
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class Order {
 
     /**
      * Current order id
      */
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
     /**
      * Current order state
      */
-    private com.nyash.travellizer.model.entity.ticket.OrderState state;
+    @Enumerated
+    @Column(name = "order_state")
+    OrderState state;
 
     /**
      * Date/time when user should pay for the order(ticket)
      */
-    private LocalDateTime dueDate;
+    @NonNull
+    @Column(name = "due_date")
+    LocalDateTime dueDate;
 
-    /**
-     * Link to the ticket's trip
-     */
-    private Trip trip;
+//    /**
+//     * Link to the ticket's trip
+//     */
+//    Trip trip;
 
     /**
      * Link to the payed ticket(if order is completed)
      */
-    private Ticket ticket;
+    @ManyToOne(cascade = {}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "ticket_id")
+    Ticket ticket;
 
     /**
      * Client name/surname
      */
-    private String clientName;
+    @NonNull
+    @Column(name = "client_name", length = 32)
+    String clientName;
 
     /**
      * Client contact phone for communication
      */
-    private String clientPhone;
+    @NonNull
+    @Column(name = "client_phone", length = 24)
+    String clientPhone;
 
     /**
      * If order was cancelled then it's reason of client cancellation
      */
-    private String cancellationReason;
+    @Column(name = "cancellation_reason", length = 128)
+    String cancellationReason;
 
     public Order() {
-        state = com.nyash.travellizer.model.entity.ticket.OrderState.CREATED;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public com.nyash.travellizer.model.entity.ticket.OrderState getState() {
-        return state;
-    }
-
-    public LocalDateTime getDueDate() {
-        return dueDate;
-    }
-
-    public Trip getTrip() {
-        return trip;
-    }
-
-    public Ticket getTicket() {
-        return ticket;
-    }
-
-    public String getClientName() {
-        return clientName;
-    }
-
-    public String getClientPhone() {
-        return clientPhone;
-    }
-
-    public String getCancellationReason() {
-        return cancellationReason;
+        state = OrderState.CREATED;
+        //TODO use application settings and check the trip start time
+        dueDate = LocalDateTime.now().plusDays(1);
     }
 
     /**
@@ -97,7 +83,7 @@ public class Order extends AbstractEntity {
         if (dueDate.isBefore(LocalDateTime.now())) {
             System.out.println("This order misses due date and should be automatically cancelled, id: " + id);
         }
-        this.state = com.nyash.travellizer.model.entity.ticket.OrderState.CANCELLED;
+        this.state = OrderState.CANCELLED;
         this.cancellationReason = reason;
     }
 
@@ -108,14 +94,14 @@ public class Order extends AbstractEntity {
         if (dueDate.isBefore(LocalDateTime.now())) {
             throw new ReservationException("This order misses due date, id: " + id);
         }
-        this.state = com.nyash.travellizer.model.entity.ticket.OrderState.COMPLETED;
+        this.state = OrderState.COMPLETED;
     }
 
     public boolean isCompleted() {
-        return state == com.nyash.travellizer.model.entity.ticket.OrderState.COMPLETED;
+        return state == OrderState.COMPLETED;
     }
 
     public boolean isCancelled() {
-        return state == com.nyash.travellizer.model.entity.ticket.OrderState.CANCELLED;
+        return state == OrderState.CANCELLED;
     }
 }
