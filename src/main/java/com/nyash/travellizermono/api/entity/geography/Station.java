@@ -26,7 +26,7 @@ public class Station {
     Long id;
 
     @ManyToOne(cascade = {}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "city_id")
     City city;
 
     @Embedded
