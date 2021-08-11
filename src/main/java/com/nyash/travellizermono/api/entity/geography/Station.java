@@ -10,18 +10,18 @@ import java.util.Objects;
  */
 public class Station {
 
-    private City city;
+    City city;
 
-    private Address address;
+    Address address;
 
     /**
      * Optional.
      * if station have office
      */
-    private String phone;
+    String phone;
 
-    private Coordinate coordinate;
+    Coordinate coordinate;
 
-    private TransportType transportType;
+    TransportType transportType;
 
 }
