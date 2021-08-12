@@ -20,7 +20,7 @@ import javax.persistence.*;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "TICKETS")
-public class Ticket {
+public class TicketEntity {
 
     /**
      * Size of the generated ticket number

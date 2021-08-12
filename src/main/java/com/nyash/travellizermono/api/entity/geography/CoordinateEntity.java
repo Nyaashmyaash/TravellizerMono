@@ -16,7 +16,7 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Embeddable
-public class Coordinate {
+public class CoordinateEntity {
 
 
     @Column(name = "X")

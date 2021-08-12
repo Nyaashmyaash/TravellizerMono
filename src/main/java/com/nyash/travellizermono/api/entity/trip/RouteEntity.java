@@ -20,7 +20,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "ROUTE")
-public class Route {
+public class RouteEntity {
 
     /**
      * Current order id
@@ -66,21 +66,21 @@ public class Route {
     /**
      * Set of trips for the specified route
      */
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "route", orphanRemoval = true)
-    Set<Trip> trips;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "routeEntity", orphanRemoval = true)
+    Set<TripEntity> tripEntities;
 
     /**
      * Adds specified trip to the trips list
      *
-     * @param trip
+     * @param tripEntity
      */
-    public Trip addTrip(final Trip trip) {
-        if (trips == null) {
-            trips = new HashSet<>();
+    public TripEntity addTrip(final TripEntity tripEntity) {
+        if (tripEntities == null) {
+            tripEntities = new HashSet<>();
         }
-        trips.add(trip);
-        trip.setRoute(this);
+        tripEntities.add(tripEntity);
+        tripEntity.setRouteEntity(this);
 
-        return trip;
+        return tripEntity;
     }
 }

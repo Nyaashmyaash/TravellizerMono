@@ -1,6 +1,6 @@
 package com.nyash.travellizermono.api.service;
 
-import com.nyash.travellizermono.api.entity.user.User;
+import com.nyash.travellizermono.api.entity.user.UserEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,25 +14,25 @@ public interface UserService {
 
     /**
      * Saves(creates or modifies) specified user instance
-     * @param user
+     * @param userEntity
      */
-    void save(User user);
+    void save(UserEntity userEntity);
 
     /**
      * Returns user with specified identifier boxed into Optional
      * @param userId
      * @return
      */
-    Optional<User> findById(Long userId);
+    Optional<UserEntity> findById(Long userId);
 
     /**
      * Returns user with specified username
      * @param userName
      * @return
      */
-    Optional<User> findByUserName(String userName);
+    Optional<UserEntity> findByUserName(String userName);
 
     void delete(Long userId);
 
-    List<User> findAll();
+    List<UserEntity> findAll();
 }

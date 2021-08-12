@@ -19,7 +19,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "CITY")
-public class City {
+public class CityEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,8 +48,8 @@ public class City {
      * Set of transport stations that is linked to this locality
      */
     @Column(name = "STATIONS")
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "city", orphanRemoval = true)
-    Set<Station> stations;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cityEntity", orphanRemoval = true)
+    Set<StationEntity> stationEntities;
 
 
 //    /**

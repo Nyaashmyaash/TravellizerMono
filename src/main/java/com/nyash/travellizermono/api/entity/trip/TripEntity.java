@@ -20,7 +20,7 @@ import java.time.LocalTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "TRIP", indexes = @Index(columnList = "ROUTE_ID, START_DATE, START_TIME", unique = true))
-public class Trip {
+public class TripEntity {
 
     /**
      * Current order id
@@ -35,7 +35,7 @@ public class Trip {
     @NonNull
     @ManyToOne(cascade = {}, fetch = FetchType.EAGER)
     @JoinColumn(name = "ROUTE_ID")
-    Route route;
+    RouteEntity routeEntity;
 
     /**
      * Date of the trip start
