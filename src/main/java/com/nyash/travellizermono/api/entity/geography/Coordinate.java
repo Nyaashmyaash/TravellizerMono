@@ -19,10 +19,10 @@ import javax.persistence.Embeddable;
 public class Coordinate {
 
 
-    @Column(name = "x")
+    @Column(name = "X")
     double x;
 
-    @Column(name = "y")
+    @Column(name = "Y")
     double y;
 
 }

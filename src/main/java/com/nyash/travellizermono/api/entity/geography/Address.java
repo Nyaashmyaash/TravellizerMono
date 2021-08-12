@@ -25,21 +25,21 @@ public class Address {
 //    Long id;
 
     @NonNull
-    @Column(name = "zip_code", length = 10)
+    @Column(name = "ZIP_CODE", length = 10)
     String zipCode;
 
     @NonNull
-    @Column(name = "street", length = 32)
+    @Column(name = "STREET", length = 32)
     String street;
 
     @NonNull
-    @Column(name = "house_number", length = 16)
+    @Column(name = "HOUSE_NUMBER", length = 16)
     String houseNumber;
 
     /**
      * (Optional) if it's address of the apartment
      */
-    @Column(name = "apartment", length = 16)
+    @Column(name = "APARTMENT", length = 16)
     String apartment;
 
 }
