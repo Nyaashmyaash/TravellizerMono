@@ -23,5 +23,5 @@ public class UserDTO {
 
     String lastName;
 
-    LocalDateTime createdAt
+    LocalDateTime createdAt;
 }

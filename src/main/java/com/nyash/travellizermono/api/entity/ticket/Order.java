@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "ORDERS")
@@ -29,16 +30,18 @@ public class Order {
     /**
      * Current order state
      */
+    @Builder.Default
     @Enumerated
     @Column(name = "ORDER_STATE")
-    OrderState state;
+    OrderState state = OrderState.CREATED;
 
     /**
      * Date/time when user should pay for the order(ticket)
      */
+    @Builder.Default
     @NonNull
     @Column(name = "DUE_DATE")
-    LocalDateTime dueDate;
+    LocalDateTime dueDate = LocalDateTime.now().plusDays(1);
 
     /**
      * Trip unique identifier
@@ -74,11 +77,11 @@ public class Order {
     @Column(name = "CANCELLATION_REASON", length = 128)
     String cancellationReason;
 
-    public Order() {
-        state = OrderState.CREATED;
-        //TODO use application settings and check the trip start time
-        dueDate = LocalDateTime.now().plusDays(1);
-    }
+//    public Order() {
+//        state = OrderState.CREATED;
+//        //TODO use application settings and check the trip start time
+//        dueDate = LocalDateTime.now().plusDays(1);
+//    }
 
     /**
      * Cancels current order
