@@ -18,7 +18,7 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "city")
+@Table(name = "CITY")
 public class City {
 
     @Id
@@ -26,14 +26,14 @@ public class City {
     Long id;
 
     @NonNull
-    @Column(name = "name")
+    @Column(name = "NAME")
     String name;
 
     /**
      * Name of the district where city is placed
      */
     @NonNull
-    @Column(name = "district")
+    @Column(name = "DISTRICT")
     String district;
 
     /**
@@ -41,13 +41,13 @@ public class City {
      * country
      */
     @NonNull
-    @Column(name = "region")
+    @Column(name = "REGION")
     String region;
 
     /**
      * Set of transport stations that is linked to this locality
      */
-    @Column(name = "stations")
+    @Column(name = "STATIONS")
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "city", orphanRemoval = true)
     Set<Station> stations;
 

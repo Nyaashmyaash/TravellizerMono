@@ -18,7 +18,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "station")
+@Table(name = "STATION")
 public class Station {
 
     @Id
@@ -26,7 +26,7 @@ public class Station {
     Long id;
 
     @ManyToOne(cascade = {}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "city_id")
+    @JoinColumn(name = "CITY_ID")
     City city;
 
     @Embedded
@@ -37,14 +37,14 @@ public class Station {
      * if station have office
      */
     @NonNull
-    @Column(name = "phone")
+    @Column(name = "PHONE")
     String phone;
 
     @Embedded
     Coordinate coordinate;
 
     @Enumerated
-    @Column(nullable = false, name = "transport_type")
+    @Column(nullable = false, name = "TRANSPORT_TYPE")
     TransportType transportType;
 
 }

@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "orders")
+@Table(name = "ORDERS")
 public class Order {
 
     /**
@@ -30,46 +30,48 @@ public class Order {
      * Current order state
      */
     @Enumerated
-    @Column(name = "order_state")
+    @Column(name = "ORDER_STATE")
     OrderState state;
 
     /**
      * Date/time when user should pay for the order(ticket)
      */
     @NonNull
-    @Column(name = "due_date")
+    @Column(name = "DUE_DATE")
     LocalDateTime dueDate;
 
-//    /**
-//     * Link to the ticket's trip
-//     */
-//    Trip trip;
+    /**
+     * Trip unique identifier
+     */
+    @NonNull
+    @Column(name = "TRIP_ID")
+    Long tripId;
 
     /**
      * Link to the payed ticket(if order is completed)
      */
     @ManyToOne(cascade = {}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "ticket_id")
+    @JoinColumn(name = "TICKET_ID")
     Ticket ticket;
 
     /**
      * Client name/surname
      */
     @NonNull
-    @Column(name = "client_name", length = 32)
+    @Column(name = "CLIENT_NAME", length = 32)
     String clientName;
 
     /**
      * Client contact phone for communication
      */
     @NonNull
-    @Column(name = "client_phone", length = 24)
+    @Column(name = "CLIENT_PHONE", length = 24)
     String clientPhone;
 
     /**
      * If order was cancelled then it's reason of client cancellation
      */
-    @Column(name = "cancellation_reason", length = 128)
+    @Column(name = "CANCELLATION_REASON", length = 128)
     String cancellationReason;
 
     public Order() {

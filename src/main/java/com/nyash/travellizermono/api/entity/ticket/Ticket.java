@@ -19,7 +19,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "Tickets")
+@Table(name = "TICKETS")
 public class Ticket {
 
     /**
@@ -35,21 +35,21 @@ public class Ticket {
      * Link to the underlying trip
      */
     @NonNull
-    @Column(name = "trip_id")
+    @Column(name = "TRIP_ID")
     private String tripId;
 
     /**
      * Client name
      */
     @NonNull
-    @Column(name = "client_name", length = 32)
+    @Column(name = "CLIENT_NAME", length = 32)
     private String name;
 
     /**
      * Auto-generated ticket identifier(usually random)
      */
     @NonNull
-    @Column(name = "uid", length = 32)
+    @Column(name = "UID", length = 32)
     private String uid;
 
     /**
