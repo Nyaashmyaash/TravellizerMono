@@ -74,14 +74,12 @@ public class UserEntity {
             String password,
             String firstName,
             String lastName,
-            LocalDateTime createdAt,
             UserRole userRole) {
         return builder()
                 .userName(userName)
                 .password(password)
                 .firstName(firstName)
                 .lastName(lastName)
-                .createdAt(createdAt)
                 .userRole(userRole)
                 .build();
     }

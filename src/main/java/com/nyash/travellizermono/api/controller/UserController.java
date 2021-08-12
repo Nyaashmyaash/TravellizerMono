@@ -51,7 +51,6 @@ public class UserController {
             @RequestParam String password,
             @RequestParam String firstName,
             @RequestParam String lastName,
-            @RequestParam LocalDateTime createdAt,
 //            @RequestParam String registrationIp, //TODO: user registration IP
             @RequestParam UserRole userRole) {
 
@@ -64,5 +63,18 @@ public class UserController {
         lastName.checkOnEmpty("lastName");
         password.checkOnEmpty("password");
         userName.checkOnEmpty("userName");
+
+
+        UserEntity user = userRepository.saveAndFlush(
+                UserEntity.makeDefault(
+                        userName,
+                        password,
+                        firstName,
+                        lastName,
+                        userRole
+                )
+        );
+
+        return ResponseEntity.ok(userDTOFactory.createUserDTO(user));
     }
 }
