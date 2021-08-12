@@ -1,7 +1,9 @@
 package com.nyash.travellizermono.api.entity.trip;
 
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,65 +13,61 @@ import java.util.Set;
  *
  * @author Nyash
  */
-@Setter
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Entity
+@Table(name = "ROUTE")
 public class Route {
+
+    /**
+     * Current order id
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
 
     /**
      * Starting point of the route
      */
-    private String start;
+    @NonNull
+    @Column(name = "START_ID")
+    String start;
 
     /**
      * Endpoint of the route
      */
-    private String destination;
+    @NonNull
+    @Column(name = "DESTINATION_ID")
+    String destination;
 
     /**
      * Start time of the route
      */
-    private LocalDateTime startTime;
+    @NonNull
+    @Column(name = "START_TIME")
+    LocalDateTime startTime;
 
     /**
      * End time of the route
      */
-    private LocalDateTime endTime;
+    @NonNull
+    @Column(name = "END_TIME")
+    LocalDateTime endTime;
 
     /**
      * Current price of the route
      */
-    private double price;
+    @Column(name = "PRICE")
+    Double price;
 
     /**
      * Set of trips for the specified route
      */
-    private Set<Trip> trips;
-
-    public Route() {
-    }
-
-    public String getStart() {
-        return start;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public LocalDateTime getStartTime() {
-        return startTime;
-    }
-
-    public LocalDateTime getEndTime() {
-        return endTime;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public Set<Trip> getTrips() {
-        return trips;
-    }
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "route", orphanRemoval = true)
+    Set<Trip> trips;
 
     /**
      * Adds specified trip to the trips list

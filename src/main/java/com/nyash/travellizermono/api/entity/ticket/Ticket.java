@@ -27,6 +27,9 @@ public class Ticket {
      */
     public static final int TICKET_NUMBER_SIZE = 32;
 
+    /**
+     * Current ticket id
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;

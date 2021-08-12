@@ -25,6 +25,7 @@ public class Station {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @NonNull
     @ManyToOne(cascade = {}, fetch = FetchType.EAGER)
     @JoinColumn(name = "CITY_ID")
     City city;
