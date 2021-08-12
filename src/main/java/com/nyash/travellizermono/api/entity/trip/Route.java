@@ -46,21 +46,27 @@ public class Route {
     /**
      * Start time of the route
      */
+    @NonNull
+    @Column(name = "START_TIME")
     LocalDateTime startTime;
 
     /**
      * End time of the route
      */
+    @NonNull
+    @Column(name = "END_TIME")
     LocalDateTime endTime;
 
     /**
      * Current price of the route
      */
+    @Column(name = "PRICE")
     Double price;
 
     /**
      * Set of trips for the specified route
      */
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "route", orphanRemoval = true)
     Set<Trip> trips;
 
     /**
