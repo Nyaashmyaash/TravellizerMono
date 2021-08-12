@@ -31,8 +31,8 @@ public class UserDTO {
     @NonNull
     LocalDateTime createdAt;
 
-    @NonNull
-    String registrationIp;
+//    @NonNull
+//    String registrationIp;
 
     @NonNull
     UserRole userRole;

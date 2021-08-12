@@ -16,12 +16,6 @@ import java.util.Optional;
  */
 public interface UserRepository extends JpaRepository <UserEntity, Long> {
 
-    /**
-     * Returns user with specified username
-     *
-     * @param userName
-     * @return
-     */
     Optional<UserEntity> findByUserName(@Param("userName") String userName);
 
     @Query("SELECT u FROM UserEntity u " +

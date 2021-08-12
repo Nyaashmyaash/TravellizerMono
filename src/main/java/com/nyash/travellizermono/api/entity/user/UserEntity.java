@@ -57,11 +57,11 @@ public class UserEntity {
 
     LocalDateTime createdAt;
 
-    /**
-     * IP of user registration
-     */
-    @Column(name = "REGISTRATION_IP", length = 30)
-    String registrationIp;
+//    /**
+//     * IP of user registration
+//     */
+//    @Column(name = "REGISTRATION_IP", length = 30)
+//    String registrationIp;
 
     /**
      * User role
@@ -69,4 +69,18 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     UserRole userRole;
 
+    public static UserEntity makeDefault(
+            String userName,
+            String password,
+            String firstName,
+            String lastName,
+            UserRole userRole) {
+        return builder()
+                .userName(userName)
+                .password(password)
+                .firstName(firstName)
+                .lastName(lastName)
+                .userRole(userRole)
+                .build();
+    }
 }
