@@ -1,7 +1,9 @@
 package com.nyash.travellizermono.api.entity.user;
 
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -11,72 +13,60 @@ import java.util.UUID;
  * @author Nyash
  *
  */
-@Setter
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Entity
+@Table(name = "USERS")
 public class User {
 
-    private UUID id;
+    /**
+     * User unique identifier
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
 
     /**
      * Unique user name within the system
      */
-    private String userName;
+    @NonNull
+    @Column(name = "USER_NAME", unique = true, length = 24)
+    String userName;
 
     /**
      * User password
      */
-    private String password;
+    @NonNull
+    @Column(name = "PASSWORD")
+    String password;
 
-    private String firstName;
+    @NonNull
+    @Column(name = "FIRST_NAME", length = 24)
+    String firstName;
 
-    private String lastName;
+    @NonNull
+    @Column(name = "LAST_NAME")
+    String lastName;
 
     /**
      * Timestamp of user registration
      */
-    private LocalDateTime createdAt;
+
+    LocalDateTime createdAt;
 
     /**
      * IP of user registration
      */
-    private String registrationIp;
+    @Column(name = "REGISTRATION_IP", length = 30)
+    String registrationIp;
 
     /**
      * User role
      */
-    private Role role;
+    @Enumerated(EnumType.STRING)
+    UserRole userRole;
 
-    public User() {
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public String getRegistrationIp() {
-        return registrationIp;
-    }
-
-    public Role getRole() {
-        return role;
-    }
 }
