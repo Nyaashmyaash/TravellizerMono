@@ -15,6 +15,11 @@ import java.time.LocalTime;
 public class Trip {
 
     /**
+     * Current order id
+     */
+    Long id;
+
+    /**
      * Route of the trip
      */
     private Route route;
