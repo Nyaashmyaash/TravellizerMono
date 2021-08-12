@@ -19,7 +19,7 @@ import javax.persistence.*;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "STATION")
-public class Station {
+public class StationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,10 +28,10 @@ public class Station {
     @NonNull
     @ManyToOne(cascade = {}, fetch = FetchType.EAGER)
     @JoinColumn(name = "CITY_ID")
-    City city;
+    CityEntity cityEntity;
 
     @Embedded
-    Address address;
+    AddressEntity addressEntity;
 
     /**
      * Optional.
@@ -42,7 +42,7 @@ public class Station {
     String phone;
 
     @Embedded
-    Coordinate coordinate;
+    CoordinateEntity coordinateEntity;
 
     @Enumerated
     @Column(nullable = false, name = "TRANSPORT_TYPE")

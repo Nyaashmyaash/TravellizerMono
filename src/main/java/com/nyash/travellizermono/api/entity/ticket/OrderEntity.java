@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "ORDERS")
-public class Order {
+public class OrderEntity {
 
     /**
      * Current order id
@@ -55,7 +55,7 @@ public class Order {
      */
     @ManyToOne(cascade = {}, fetch = FetchType.EAGER)
     @JoinColumn(name = "TICKET_ID")
-    Ticket ticket;
+    TicketEntity ticketEntity;
 
     /**
      * Client name/surname

@@ -20,7 +20,7 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "USERS")
-public class User {
+public class UserEntity {
 
     /**
      * User unique identifier

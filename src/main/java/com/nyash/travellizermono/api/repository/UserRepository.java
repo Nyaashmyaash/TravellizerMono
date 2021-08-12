@@ -1,6 +1,6 @@
 package com.nyash.travellizermono.api.repository;
 
-import com.nyash.travellizermono.api.entity.user.User;
+import com.nyash.travellizermono.api.entity.user.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 
@@ -12,7 +12,7 @@ import java.util.Optional;
  * @author Nyash
  *
  */
-public interface UserRepository extends JpaRepository <User, Long> {
+public interface UserRepository extends JpaRepository <UserEntity, Long> {
 
     /**
      * Returns user with specified username
@@ -20,5 +20,5 @@ public interface UserRepository extends JpaRepository <User, Long> {
      * @param userName
      * @return
      */
-    Optional<User> findByUserName(@Param("userName") String userName);
+    Optional<UserEntity> findByUserName(@Param("userName") String userName);
 }

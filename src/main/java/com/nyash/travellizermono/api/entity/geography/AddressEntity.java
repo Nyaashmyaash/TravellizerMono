@@ -18,7 +18,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Embeddable
-public class Address {
+public class AddressEntity {
 
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
