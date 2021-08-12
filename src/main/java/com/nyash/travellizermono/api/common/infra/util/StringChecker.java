@@ -1,5 +1,6 @@
 package com.nyash.travellizermono.api.common.infra.util;
 
+import com.nyash.travellizermono.api.common.infra.exception.BadRequestException;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
