@@ -1,6 +1,7 @@
 package com.nyash.travellizermono.api.controller;
 
 import com.nyash.travellizermono.api.common.infra.util.StringChecker;
+import com.nyash.travellizermono.api.dto.AckDTO;
 import com.nyash.travellizermono.api.dto.UserDTO;
 import com.nyash.travellizermono.api.entity.user.UserEntity;
 import com.nyash.travellizermono.api.entity.user.UserRole;
@@ -10,14 +11,12 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.ExtensionMethod;
 import lombok.experimental.FieldDefaults;
+import org.springframework.boot.autoconfigure.jms.JmsProperties;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -33,6 +32,10 @@ public class UserController {
 
     public static final String FETCH_USERS = "api/users";
     public static final String CREATE_USER = "api/users";
+    public static final String SHOW_USER = "api/users/{userId}";
+    public static final String UPDATE_USER = "api/users/{userId}";
+    public static final String DELETE_USER = "api/users/{userId}";
+    //TODO: feature that promote user to Manager
 
     @GetMapping(FETCH_USERS)
     public ResponseEntity<List<UserDTO>> fetchUsers(
@@ -64,7 +67,6 @@ public class UserController {
         password.checkOnEmpty("password");
         userName.checkOnEmpty("userName");
 
-
         UserEntity user = userRepository.saveAndFlush(
                 UserEntity.makeDefault(
                         userName,
@@ -76,5 +78,28 @@ public class UserController {
         );
 
         return ResponseEntity.ok(userDTOFactory.createUserDTO(user));
+    }
+
+    @GetMapping(SHOW_USER)
+    public ResponseEntity<UserDTO> showUser (@PathVariable Long userId) {
+
+
+        return null;
+    }
+
+    @PostMapping(UPDATE_USER)
+    public ResponseEntity<UserDTO> updateUser (@PathVariable Long userId) {
+        return null;
+    }
+
+    @DeleteMapping(DELETE_USER)
+    public ResponseEntity<AckDTO> deleteUser(
+            @PathVariable Long userId) {
+
+        if (userRepository.existsById(userId)) {
+            userRepository.deleteById(userId);
+        }
+
+        return ResponseEntity.ok(AckDTO.makeDefault(true));
     }
 }
