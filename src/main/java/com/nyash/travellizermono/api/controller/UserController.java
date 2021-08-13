@@ -1,6 +1,7 @@
 package com.nyash.travellizermono.api.controller;
 
 import com.nyash.travellizermono.api.common.infra.util.StringChecker;
+import com.nyash.travellizermono.api.dto.AckDTO;
 import com.nyash.travellizermono.api.dto.UserDTO;
 import com.nyash.travellizermono.api.entity.user.UserEntity;
 import com.nyash.travellizermono.api.entity.user.UserRole;
@@ -10,12 +11,10 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.ExtensionMethod;
 import lombok.experimental.FieldDefaults;
+import org.springframework.boot.autoconfigure.jms.JmsProperties;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -81,4 +80,13 @@ public class UserController {
     }
 
     @DeleteMapping(DELETE_USER)
+    public ResponseEntity<AckDTO> deleteUser(
+            @PathVariable Long userId) {
+
+        if (userRepository.existsById(userId)) {
+            userRepository.deleteById(userId);
+        }
+
+        return ResponseEntity.ok(AckDTO.makeDefault(true));
+    }
 }
