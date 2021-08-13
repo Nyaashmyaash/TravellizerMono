@@ -18,6 +18,7 @@ public class UserDTOFactory {
                 .firstName(entity.getFirstName())
                 .lastName(entity.getLastName())
                 .createdAt(entity.getCreatedAt())
+                .userRole(entity.getUserRole())
                 .build();
     }
 

@@ -55,7 +55,9 @@ public class UserEntity {
      * Timestamp of user registration
      */
 
-    LocalDateTime createdAt;
+    @Builder.Default
+    @Column(name = "CREATED_AT")
+    LocalDateTime createdAt = LocalDateTime.now();
 
 //    /**
 //     * IP of user registration
