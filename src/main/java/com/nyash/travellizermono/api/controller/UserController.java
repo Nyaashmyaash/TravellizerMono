@@ -12,6 +12,7 @@ import lombok.experimental.ExtensionMethod;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,6 +34,8 @@ public class UserController {
 
     public static final String FETCH_USERS = "api/users";
     public static final String CREATE_USER = "api/users";
+    public static final String DELETE_USER = "api/users/{userId}";
+    //TODO: feature that promote user to Manager
 
     @GetMapping(FETCH_USERS)
     public ResponseEntity<List<UserDTO>> fetchUsers(
@@ -64,7 +67,6 @@ public class UserController {
         password.checkOnEmpty("password");
         userName.checkOnEmpty("userName");
 
-
         UserEntity user = userRepository.saveAndFlush(
                 UserEntity.makeDefault(
                         userName,
@@ -77,4 +79,6 @@ public class UserController {
 
         return ResponseEntity.ok(userDTOFactory.createUserDTO(user));
     }
+
+    @DeleteMapping(DELETE_USER)
 }
