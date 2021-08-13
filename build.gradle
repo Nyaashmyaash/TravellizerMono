@@ -18,18 +18,46 @@ repositories {
     mavenCentral()
 }
 
+/**
+ * Spring dependencies
+ */
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+}
+
+/**
+ * Database dependencies
+ */
+dependencies {
     runtimeOnly 'org.postgresql:postgresql'
+}
+
+/**
+ * Other dependencies
+ */
+dependencies {
+    compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
     implementation group: 'com.ibm.icu', name: 'icu4j', version: '69.1'
+}
+
+/**
+ * Logging dependencies
+ */
+dependencies {
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
+}
+
+/**
+ * Testing dependencies
+ */
+dependencies {
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 test {

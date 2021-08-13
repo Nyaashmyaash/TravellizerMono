@@ -17,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -33,6 +32,8 @@ public class UserController {
 
     public static final String FETCH_USERS = "api/users";
     public static final String CREATE_USER = "api/users";
+    public static final String SHOW_USER = "api/users/{userId}";
+    public static final String UPDATE_USER = "api/users/{userId}";
     public static final String DELETE_USER = "api/users/{userId}";
     //TODO: feature that promote user to Manager
 
@@ -77,6 +78,18 @@ public class UserController {
         );
 
         return ResponseEntity.ok(userDTOFactory.createUserDTO(user));
+    }
+
+    @GetMapping(SHOW_USER)
+    public ResponseEntity<UserDTO> showUser (@PathVariable Long userId) {
+
+
+        return null;
+    }
+
+    @PostMapping(UPDATE_USER)
+    public ResponseEntity<UserDTO> updateUser (@PathVariable Long userId) {
+        return null;
     }
 
     @DeleteMapping(DELETE_USER)
