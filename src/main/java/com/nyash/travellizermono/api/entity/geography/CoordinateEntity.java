@@ -11,7 +11,8 @@ import javax.persistence.Embeddable;
  *
  * @author Nyash
  */
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)

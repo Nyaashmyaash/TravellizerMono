@@ -12,7 +12,8 @@ import javax.persistence.*;
  * @author Nyash
  */
 
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
