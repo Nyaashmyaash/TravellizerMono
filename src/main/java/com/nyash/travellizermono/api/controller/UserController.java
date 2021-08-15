@@ -89,8 +89,24 @@ public class UserController {
     }
 
     @PostMapping(UPDATE_USER)
-    public ResponseEntity<UserDTO> updateUser (@PathVariable Long userId) {
-        return null;
+    public ResponseEntity<UserDTO> updateUser (@PathVariable Long userId,
+                                               @RequestParam String userName,
+                                               @RequestParam String password,
+                                               @RequestParam String firstName,
+                                               @RequestParam String lastName,
+                                               @RequestParam UserRole userRole) {
+
+        UserEntity user = userRepository.findById(userId).orElseThrow(NoSuchUserException::new);
+
+        user.setUserName(userName);
+        user.setPassword(password);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setUserRole(userRole);
+
+        UserEntity updatedUser = userRepository.saveAndFlush(user);
+
+        return ResponseEntity.ok(userDTOFactory.createUserDTO(updatedUser));
     }
 
     @DeleteMapping(DELETE_USER)
