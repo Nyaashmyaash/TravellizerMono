@@ -1,5 +1,6 @@
 package com.nyash.travellizermono.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nyash.travellizermono.api.entity.user.UserRole;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -28,6 +29,7 @@ public class UserDTO {
     @NonNull
     String lastName;
 
+    @JsonProperty("created_at")
     @NonNull
     LocalDateTime createdAt;
 

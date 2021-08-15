@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
  *
  * @author Nyash
  */
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

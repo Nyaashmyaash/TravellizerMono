@@ -5,7 +5,6 @@ import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 /**
  * Entity that encapsulates user of the application
@@ -13,7 +12,8 @@ import java.util.UUID;
  * @author Nyash
  *
  */
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

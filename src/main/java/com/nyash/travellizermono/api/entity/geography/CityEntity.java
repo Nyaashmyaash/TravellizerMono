@@ -12,7 +12,8 @@ import java.util.Set;
  * @author Nyash
  */
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

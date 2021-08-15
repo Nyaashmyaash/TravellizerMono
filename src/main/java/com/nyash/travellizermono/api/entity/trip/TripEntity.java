@@ -13,7 +13,8 @@ import java.time.LocalTime;
  * @author Nyash
  *
  */
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

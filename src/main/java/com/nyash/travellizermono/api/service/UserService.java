@@ -16,7 +16,7 @@ public interface UserService {
      * Saves(creates or modifies) specified user instance
      * @param userEntity
      */
-    void save(UserEntity userEntity);
+    void fetchUsers(UserEntity userEntity);
 
     /**
      * Returns user with specified identifier boxed into Optional

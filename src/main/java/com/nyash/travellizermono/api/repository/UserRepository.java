@@ -18,10 +18,12 @@ public interface UserRepository extends JpaRepository <UserEntity, Long> {
 
     Optional<UserEntity> findByUserName(@Param("userName") String userName);
 
+
     @Query("SELECT u FROM UserEntity u " +
             "WHERE :isFiltered = FALSE " +
-            "OR (LOWER(u.firstName) LIKE LOWER(CONCAT('%', :filter, '%'))" +
+            "OR (LOWER(u.userName) LIKE LOWER(CONCAT('%', :filter, '%'))" +
+            "OR LOWER(u.firstName) LIKE LOWER(CONCAT('%', :filter, '%'))" +
             "OR LOWER(u.lastName) LIKE LOWER(CONCAT('%', :filter, '%')))" +
-            "ORDER BY u.lastName, u.firstName")
+            "ORDER BY u.userName, u.lastName, u.firstName")
     List<UserEntity> findAllByFilter(boolean isFiltered, String filter);
 }
