@@ -1,5 +1,6 @@
 package com.nyash.travellizermono.api.controller;
 
+import com.nyash.travellizermono.api.common.infra.exception.NoSuchUserException;
 import com.nyash.travellizermono.api.common.infra.util.StringChecker;
 import com.nyash.travellizermono.api.dto.AckDTO;
 import com.nyash.travellizermono.api.dto.UserDTO;
@@ -11,7 +12,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.ExtensionMethod;
 import lombok.experimental.FieldDefaults;
-import org.springframework.boot.autoconfigure.jms.JmsProperties;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -83,8 +83,9 @@ public class UserController {
     @GetMapping(SHOW_USER)
     public ResponseEntity<UserDTO> showUser (@PathVariable Long userId) {
 
+        UserEntity user = userRepository.findById(userId).orElseThrow(NoSuchUserException::new);
 
-        return null;
+        return ResponseEntity.ok(userDTOFactory.createUserDTO(user));
     }
 
     @PostMapping(UPDATE_USER)
