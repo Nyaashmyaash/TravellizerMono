@@ -77,6 +77,7 @@ public class UserEntity {  //TODO: Users e-mail integration
             String firstName,
             String lastName,
             UserRole userRole) {
+
         return builder()
                 .userName(userName)
                 .password(password)

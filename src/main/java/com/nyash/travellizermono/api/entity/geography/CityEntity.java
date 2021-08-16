@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -51,6 +52,20 @@ public class CityEntity {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "STATION_ID")
     Set<StationEntity> stationEntities;
+
+    public static CityEntity makeDefault(
+            String name,
+            String district,
+            String region,
+            Set<StationEntity> stations) {
+
+        return builder()
+                .name(name)
+                .district(district)
+                .region(region)
+                .stationEntities(stations)
+                .build();
+    }
 
 
 //    /**
