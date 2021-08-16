@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "USERS")
-public class UserEntity {
+public class UserEntity {  //TODO: Users e-mail integration
 
     /**
      * User unique identifier

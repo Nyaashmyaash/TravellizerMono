@@ -31,6 +31,10 @@ public class StationEntity {
     @JoinColumn(name = "CITY_ID")
     CityEntity cityEntity;
 
+    @NonNull
+    @Column(name = "STATION_NAME")
+    String stationName;
+
     @Embedded
     AddressEntity addressEntity;
 
