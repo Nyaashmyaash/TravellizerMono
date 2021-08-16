@@ -26,6 +26,8 @@ import java.util.List;
 @Transactional
 public class UserController {
 
+    //TODO: add logging to user controller
+
     UserRepository userRepository;
 
     UserDTOFactory userDTOFactory;
@@ -54,8 +56,10 @@ public class UserController {
             @RequestParam String password,
             @RequestParam String firstName,
             @RequestParam String lastName,
-//            @RequestParam String registrationIp, //TODO: user registration IP
+//            @RequestParam String registrationIp,
             @RequestParam UserRole userRole) {
+
+        //TODO: user registration IP
 
         firstName = firstName.trim();
         lastName = lastName.trim();
