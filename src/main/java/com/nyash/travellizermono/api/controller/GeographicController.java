@@ -1,5 +1,6 @@
 package com.nyash.travellizermono.api.controller;
 
+import com.nyash.travellizermono.api.common.infra.exception.NotFoundException;
 import com.nyash.travellizermono.api.common.infra.util.StringChecker;
 import com.nyash.travellizermono.api.dto.CityDTO;
 import com.nyash.travellizermono.api.dto.StationDTO;
@@ -15,9 +16,7 @@ import lombok.experimental.ExtensionMethod;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -38,6 +37,8 @@ public class GeographicController {
     StationDTOFactory stationDtoFactory;
 
     public static final String FETCH_CITIES = "api/cities";
+    public static final String CREATE_CITY = "api/cities";
+    public static final String UPDATE_CITY = "api/cities/{cityId}";
     public static final String FETCH_STATIONS = "api/cities/{cityId}/stations";
 
     @GetMapping(FETCH_CITIES)
@@ -49,6 +50,39 @@ public class GeographicController {
         List<CityEntity> cities = cityRepository.findAllByFilter(isFiltered, filter);
 
         return ResponseEntity.ok(cityDtoFactory.createCityDTOList(cities));
+    }
+
+    @PostMapping(CREATE_CITY)
+    public ResponseEntity<CityDTO> createCity(
+            @RequestBody CityDTO dto) {
+
+        CityEntity city = CityEntity.makeDefault(
+                    dto.getName(),
+                    dto.getDistrict(),
+                    dto.getRegion(),
+                    dto.getStations());
+
+        return ResponseEntity.ok(cityDtoFactory.createCityDTO(city));
+    }
+
+    @PostMapping(UPDATE_CITY)
+    public ResponseEntity<CityDTO> updateCity(
+            @PathVariable Long cityId,
+            @RequestBody CityDTO dto) {
+
+        CityEntity city = cityRepository
+                .findById(cityId)
+                .orElseThrow(() ->
+                        new NotFoundException(String.format("City with ID \"%s\" not found", cityId)));
+
+        city.setName(dto.getName());
+        city.setDistrict(dto.getDistrict());
+        city.setRegion(dto.getRegion());
+        city.setStationEntities(dto.getStations());
+
+        CityEntity updatedCity = cityRepository.saveAndFlush(city);
+
+        return ResponseEntity.ok(cityDtoFactory.createCityDTO(updatedCity));
     }
 
     @GetMapping(FETCH_STATIONS)
