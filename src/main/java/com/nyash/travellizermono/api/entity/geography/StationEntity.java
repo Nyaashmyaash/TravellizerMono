@@ -28,7 +28,7 @@ public class StationEntity {
 
     @NonNull
     @ManyToOne(cascade = {}, fetch = FetchType.EAGER)
-    @JoinColumn(name = "CITY_ID", referencedColumnName = "id")
+    @JoinColumn(name = "CITY_ID")
     CityEntity cityEntity;
 
     @NonNull
