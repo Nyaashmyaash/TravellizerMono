@@ -1,8 +1,6 @@
 package com.nyash.travellizermono.api.dto;
 
-import com.nyash.travellizermono.api.entity.geography.AddressEntity;
 import com.nyash.travellizermono.api.entity.geography.CityEntity;
-import com.nyash.travellizermono.api.entity.geography.CoordinateEntity;
 import com.nyash.travellizermono.api.entity.geography.TransportType;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
