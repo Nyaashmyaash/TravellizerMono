@@ -48,8 +48,8 @@ public class CityEntity {
     /**
      * Set of transport stations that is linked to this locality
      */
-    @Column(name = "STATIONS")
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cityEntity", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "STATION_ID")
     Set<StationEntity> stationEntities;
 
 
