@@ -1,11 +1,14 @@
 package com.nyash.travellizermono.api.controller;
 
+import com.nyash.travellizermono.api.common.infra.exception.BadRequestException;
 import com.nyash.travellizermono.api.common.infra.exception.NotFoundException;
 import com.nyash.travellizermono.api.common.infra.util.StringChecker;
+import com.nyash.travellizermono.api.dto.AckDTO;
 import com.nyash.travellizermono.api.dto.CityDTO;
 import com.nyash.travellizermono.api.dto.StationDTO;
 import com.nyash.travellizermono.api.entity.geography.CityEntity;
 import com.nyash.travellizermono.api.entity.geography.StationEntity;
+import com.nyash.travellizermono.api.entity.geography.TransportType;
 import com.nyash.travellizermono.api.factory.CityDTOFactory;
 import com.nyash.travellizermono.api.factory.StationDTOFactory;
 import com.nyash.travellizermono.api.repository.CityRepository;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @ExtensionMethod(StringChecker.class)
@@ -39,7 +43,10 @@ public class GeographicController {
     public static final String FETCH_CITIES = "api/cities";
     public static final String CREATE_CITY = "api/cities";
     public static final String UPDATE_CITY = "api/cities/{cityId}";
+    public static final String DELETE_CITY = "api/cities/{cityId}";
     public static final String FETCH_STATIONS = "api/cities/{cityId}/stations";
+    public static final String CREATE_OR_UPDATE_STATION = "api/cities/{cityId}/stations";
+
 
     @GetMapping(FETCH_CITIES)
     public ResponseEntity<List<CityDTO>> fetchCities (
@@ -54,13 +61,15 @@ public class GeographicController {
 
     @PostMapping(CREATE_CITY)
     public ResponseEntity<CityDTO> createCity(
-            @RequestBody CityDTO dto) {
+            @RequestParam String name,
+            @RequestParam String district,
+            @RequestParam String region) {
 
-        CityEntity city = CityEntity.makeDefault(
-                    dto.getName(),
-                    dto.getDistrict(),
-                    dto.getRegion(),
-                    dto.getStations());
+        CityEntity city = cityRepository.saveAndFlush(
+                CityEntity.makeDefault(
+                    name,
+                    district,
+                    region));
 
         return ResponseEntity.ok(cityDtoFactory.createCityDTO(city));
     }
@@ -68,21 +77,32 @@ public class GeographicController {
     @PostMapping(UPDATE_CITY)
     public ResponseEntity<CityDTO> updateCity(
             @PathVariable Long cityId,
-            @RequestBody CityDTO dto) {
+            @RequestParam String name,
+            @RequestParam String district,
+            @RequestParam String region) {
 
         CityEntity city = cityRepository
                 .findById(cityId)
                 .orElseThrow(() ->
                         new NotFoundException(String.format("City with ID \"%s\" not found", cityId)));
 
-        city.setName(dto.getName());
-        city.setDistrict(dto.getDistrict());
-        city.setRegion(dto.getRegion());
-        city.setStationEntities(dto.getStations());
+        city.setName(name);
+        city.setDistrict(district);
+        city.setRegion(region);
 
         CityEntity updatedCity = cityRepository.saveAndFlush(city);
 
         return ResponseEntity.ok(cityDtoFactory.createCityDTO(updatedCity));
+    }
+
+    @DeleteMapping(DELETE_CITY)
+    public ResponseEntity<AckDTO> deleteCity(
+            @PathVariable Long cityId) {
+        if (cityRepository.existsById(cityId)) {
+            cityRepository.deleteById(cityId);
+        }
+
+        return ResponseEntity.ok(AckDTO.makeDefault(true));
     }
 
     @GetMapping(FETCH_STATIONS)
@@ -92,8 +112,28 @@ public class GeographicController {
 
         boolean isFiltered = !filter.trim().isEmpty();
 
-        List<StationEntity> stations = stationRepository.findAllByFilter(isFiltered, filter);
+        List<StationEntity> stations = stationRepository.findAllByFilterAndCityId(isFiltered, filter, cityId);
 
         return ResponseEntity.ok(stationDtoFactory.createStationDTOList(stations));
+    }
+
+    @PutMapping(CREATE_OR_UPDATE_STATION)
+    public ResponseEntity<StationDTO> createOrUpdateStation(
+            @PathVariable String cityId,
+            @RequestParam(value = "station_name", required = false) Optional<String> optionalStationName,
+            @RequestParam String zipCode,
+            @RequestParam String street,
+            @RequestParam String houseNumber,
+            @RequestParam String apartment,
+            @RequestParam String phone,
+            @RequestParam Double x,
+            @RequestParam Double y,
+            @RequestParam TransportType transportType) {
+
+        if (!optionalStationName.isPresent()) {
+            throw new BadRequestException("Station's name can't be empty.");
+        }
+
+        return null;
     }
 }

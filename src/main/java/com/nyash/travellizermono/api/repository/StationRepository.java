@@ -12,9 +12,10 @@ public interface StationRepository extends JpaRepository<StationEntity, Long> {
 
     @Query("SELECT s FROM StationEntity s " +
             "WHERE :isFiltered = FALSE " +
-            "OR (LOWER(s.stationName) LIKE LOWER(CONCAT('%', :filter, '%')))" +
+            "OR (LOWER(s.stationName) LIKE LOWER(CONCAT('%', :filter, '%'))) " +
+            "AND s.cityEntity.id =:cityId " +
             "ORDER BY s.stationName")
-    List<StationEntity> findAllByFilter(boolean isFiltered, String filter);
+    List<StationEntity> findAllByFilterAndCityId(boolean isFiltered, String filter, Long cityId);
 
     @Query("SELECT s FROM StationEntity s where s.cityEntity.id =:cityId")
     List<StationEntity> findAllByCityId(Long cityId);
