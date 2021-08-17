@@ -2,6 +2,7 @@ package com.nyash.travellizermono.api.controller;
 
 import com.nyash.travellizermono.api.common.infra.exception.NotFoundException;
 import com.nyash.travellizermono.api.common.infra.util.StringChecker;
+import com.nyash.travellizermono.api.dto.AckDTO;
 import com.nyash.travellizermono.api.dto.CityDTO;
 import com.nyash.travellizermono.api.dto.StationDTO;
 import com.nyash.travellizermono.api.entity.geography.CityEntity;
@@ -39,6 +40,7 @@ public class GeographicController {
     public static final String FETCH_CITIES = "api/cities";
     public static final String CREATE_CITY = "api/cities";
     public static final String UPDATE_CITY = "api/cities/{cityId}";
+    public static final String DELETE_CITY = "api/cities/{cityId}";
     public static final String FETCH_STATIONS = "api/cities/{cityId}/stations";
 
     @GetMapping(FETCH_CITIES)
@@ -61,7 +63,6 @@ public class GeographicController {
                     dto.getName(),
                     dto.getDistrict(),
                     dto.getRegion()));
-        
 
         return ResponseEntity.ok(cityDtoFactory.createCityDTO(city));
     }
@@ -83,6 +84,16 @@ public class GeographicController {
         CityEntity updatedCity = cityRepository.saveAndFlush(city);
 
         return ResponseEntity.ok(cityDtoFactory.createCityDTO(updatedCity));
+    }
+
+    @DeleteMapping(DELETE_CITY)
+    public ResponseEntity<AckDTO> deleteCity(
+            @PathVariable Long cityId) {
+        if (cityRepository.existsById(cityId)) {
+            cityRepository.deleteById(cityId);
+        }
+
+        return ResponseEntity.ok(AckDTO.makeDefault(true));
     }
 
     @GetMapping(FETCH_STATIONS)
