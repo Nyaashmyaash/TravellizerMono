@@ -17,4 +17,6 @@ public interface StationRepository extends JpaRepository<StationEntity, Long> {
             "ORDER BY s.stationName")
     List<StationEntity> findAllByFilterAndCityId(boolean isFiltered, String filter, Long cityId);
 
+    @Query("SELECT s FROM StationEntity s where s.cityEntity.id =:cityId")
+    List<StationEntity> findAllByCityId(Long cityId);
 }
