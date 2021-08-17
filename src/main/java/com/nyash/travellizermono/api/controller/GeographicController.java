@@ -42,6 +42,8 @@ public class GeographicController {
     public static final String UPDATE_CITY = "api/cities/{cityId}";
     public static final String DELETE_CITY = "api/cities/{cityId}";
     public static final String FETCH_STATIONS = "api/cities/{cityId}/stations";
+    public static final String CREATE_OR_UPDATE_STATION = "api/cities/{cityId}/stations";
+
 
     @GetMapping(FETCH_CITIES)
     public ResponseEntity<List<CityDTO>> fetchCities (
@@ -103,8 +105,14 @@ public class GeographicController {
 
         boolean isFiltered = !filter.trim().isEmpty();
 
-        List<StationEntity> stations = stationRepository.findAllByFilter(isFiltered, filter);
+        List<StationEntity> stations = stationRepository.findAllByFilterAndCityId(isFiltered, filter, cityId);
 
         return ResponseEntity.ok(stationDtoFactory.createStationDTOList(stations));
+    }
+
+    @PutMapping(CREATE_OR_UPDATE_STATION)
+    public ResponseEntity<StationDTO> createOrUpdateStation(
+            @PathVariable String cityId ) {
+        return null;
     }
 }
