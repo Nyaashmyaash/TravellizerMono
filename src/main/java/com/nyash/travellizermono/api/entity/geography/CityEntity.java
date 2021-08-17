@@ -56,14 +56,12 @@ public class CityEntity {
     public static CityEntity makeDefault(
             String name,
             String district,
-            String region,
-            Set<StationEntity> stations) {
+            String region) {
 
         return builder()
                 .name(name)
                 .district(district)
                 .region(region)
-                .stationEntities(stations)
                 .build();
     }
 

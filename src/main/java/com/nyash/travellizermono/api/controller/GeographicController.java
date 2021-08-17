@@ -56,11 +56,12 @@ public class GeographicController {
     public ResponseEntity<CityDTO> createCity(
             @RequestBody CityDTO dto) {
 
-        CityEntity city = CityEntity.makeDefault(
+        CityEntity city = cityRepository.saveAndFlush(
+                CityEntity.makeDefault(
                     dto.getName(),
                     dto.getDistrict(),
-                    dto.getRegion(),
-                    dto.getStations());
+                    dto.getRegion()));
+        
 
         return ResponseEntity.ok(cityDtoFactory.createCityDTO(city));
     }
@@ -78,7 +79,6 @@ public class GeographicController {
         city.setName(dto.getName());
         city.setDistrict(dto.getDistrict());
         city.setRegion(dto.getRegion());
-        city.setStationEntities(dto.getStations());
 
         CityEntity updatedCity = cityRepository.saveAndFlush(city);
 

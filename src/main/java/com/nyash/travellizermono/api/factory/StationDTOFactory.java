@@ -2,10 +2,12 @@ package com.nyash.travellizermono.api.factory;
 
 import com.nyash.travellizermono.api.dto.StationDTO;
 import com.nyash.travellizermono.api.entity.geography.StationEntity;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class StationDTOFactory {
 
     public StationDTO createStationDTO(StationEntity stationEntity) {
