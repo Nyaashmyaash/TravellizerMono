@@ -22,8 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @ExtensionMethod(StringChecker.class)
@@ -47,6 +45,7 @@ public class GeographicController {
     public static final String FETCH_STATIONS = "api/cities/{cityId}/stations";
     public static final String CREATE_STATION = "api/cities/{cityId}/stations";
     public static final String UPDATE_STATION = "api/cities/{cityId}/stations/{stationId}";
+    public static final String DELETE_STATION = "api/cities/{cityId}/stations/{stationId}";
 
 
     @GetMapping(FETCH_CITIES)
@@ -158,7 +157,7 @@ public class GeographicController {
         return ResponseEntity.ok(stationDtoFactory.createStationDTO(station));
     }
 
-    @PutMapping(UPDATE_STATION)
+    @PostMapping(UPDATE_STATION)
     public ResponseEntity<StationDTO> updateStation(
             @PathVariable Long cityId,
             @PathVariable Long stationId,
@@ -195,7 +194,23 @@ public class GeographicController {
 
         stationRepository.saveAndFlush(station);
 
-
         return ResponseEntity.ok(stationDtoFactory.createStationDTO(station));
+    }
+
+    @DeleteMapping(DELETE_STATION)
+    public ResponseEntity<AckDTO> deleteStation(
+            @PathVariable Long cityId,
+            @PathVariable Long stationId) {
+
+        cityRepository
+                .findById(cityId)
+                .orElseThrow(() ->
+                        new NotFoundException(String.format("City with ID \"%s\" not found", cityId)));
+
+        if (stationRepository.existsById(stationId)) {
+            stationRepository.deleteById(stationId);
+        }
+
+        return ResponseEntity.ok(AckDTO.makeDefault(true));
     }
 }
