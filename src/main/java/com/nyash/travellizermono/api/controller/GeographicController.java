@@ -254,11 +254,7 @@ public class GeographicController {
             @RequestParam Double y,
             @RequestParam TransportType transportType) {
 
-        cityRepository
-                .findById(cityId)
-                .orElseThrow(() ->
-                        new NotFoundException(String.format("City with ID \"%s\" not found", cityId)));
-
+        cityCheck(cityId);
 
         StationEntity station = stationRepository
                 .findById(stationId)
@@ -292,15 +288,23 @@ public class GeographicController {
             @PathVariable Long cityId,
             @PathVariable Long stationId) {
 
-        cityRepository
-                .findById(cityId)
-                .orElseThrow(() ->
-                        new NotFoundException(String.format("City with ID \"%s\" not found", cityId)));
+        cityCheck(cityId);
 
         if (stationRepository.existsById(stationId)) {
             stationRepository.deleteById(stationId);
         }
 
         return ResponseEntity.ok(AckDTO.makeDefault(true));
+    }
+
+    /**
+     * Verifies that city is exist and throws exception otherwise
+     * @param cityId
+     */
+    void cityCheck(Long cityId) {
+        cityRepository
+                .findById(cityId)
+                .orElseThrow(() ->
+                        new NotFoundException(String.format("City with ID \"%s\" not found", cityId)));
     }
 }
