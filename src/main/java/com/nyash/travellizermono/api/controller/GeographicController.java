@@ -37,6 +37,7 @@ import java.util.List;
 @Transactional
 public class GeographicController {
 
+    //TODO: add logging to Geographic controller
 
     CityRepository cityRepository;
 
@@ -301,7 +302,7 @@ public class GeographicController {
      * Verifies that city is exist and throws exception otherwise
      * @param cityId
      */
-    void cityCheck(Long cityId) {
+    private void cityCheck(Long cityId) {
         cityRepository
                 .findById(cityId)
                 .orElseThrow(() ->

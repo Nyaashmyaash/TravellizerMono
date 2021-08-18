@@ -7,6 +7,10 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Defines CRUD methods to access Station objects in the persistent storage
+ * @author Nyash
+ */
 public interface StationRepository extends JpaRepository<StationEntity, Long> {
 
     //TODO: actual filter criteria
