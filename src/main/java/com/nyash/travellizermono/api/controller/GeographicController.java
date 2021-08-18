@@ -111,9 +111,12 @@ public class GeographicController {
             @PathVariable Long cityId,
             @RequestParam(defaultValue = "") String filter) {
 
-        boolean isFiltered = !filter.trim().isEmpty();
-
-        List<StationEntity> stations = stationRepository.findAllByFilterAndCityId(isFiltered, filter, cityId);
+        CityEntity city = cityRepository
+                .findById(cityId)
+                .orElseThrow(() ->
+                        new NotFoundException(String.format("City with ID \"%s\" not found", cityId)));
+        //TODO: make geographic validation UTIL class
+        List<StationEntity> stations = stationRepository.findAllByCityId(cityId);
 
         return ResponseEntity.ok(stationDtoFactory.createStationDTOList(stations));
     }
