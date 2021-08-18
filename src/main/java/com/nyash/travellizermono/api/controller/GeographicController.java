@@ -1,6 +1,5 @@
 package com.nyash.travellizermono.api.controller;
 
-import com.nyash.travellizermono.api.common.infra.exception.BadRequestException;
 import com.nyash.travellizermono.api.common.infra.exception.NotFoundException;
 import com.nyash.travellizermono.api.common.infra.util.StringChecker;
 import com.nyash.travellizermono.api.dto.AckDTO;
@@ -46,7 +45,8 @@ public class GeographicController {
     public static final String UPDATE_CITY = "api/cities/{cityId}";
     public static final String DELETE_CITY = "api/cities/{cityId}";
     public static final String FETCH_STATIONS = "api/cities/{cityId}/stations";
-    public static final String CREATE_OR_UPDATE_STATION = "api/cities/{cityId}/stations";
+    public static final String CREATE_STATION = "api/cities/{cityId}/stations";
+    public static final String UPDATE_STATION = "api/cities/{cityId}/stations/{stationId}";
 
 
     @GetMapping(FETCH_CITIES)
@@ -121,8 +121,8 @@ public class GeographicController {
         return ResponseEntity.ok(stationDtoFactory.createStationDTOList(stations));
     }
 
-    @PutMapping(CREATE_OR_UPDATE_STATION)
-    public ResponseEntity<StationDTO> createOrUpdateStation(
+    @PostMapping(CREATE_STATION)
+    public ResponseEntity<StationDTO> createStation(
             @PathVariable Long cityId,
             @RequestParam String stationName,
             @RequestParam String zipCode,
@@ -139,43 +139,62 @@ public class GeographicController {
                 .orElseThrow(() ->
                         new NotFoundException(String.format("City with ID \"%s\" not found", cityId)));
 
+        StationEntity station = stationRepository.saveAndFlush(
+                StationEntity.makeDefault(
+                        stationName,
+                        city,
+                        zipCode,
+                        street,
+                        houseNumber,
+                        apartment,
+                        phone,
+                        x,
+                        y,
+                        transportType
+                ));
+
+        city.addStation(station);
+
+        return ResponseEntity.ok(stationDtoFactory.createStationDTO(station));
+    }
+
+    @PutMapping(UPDATE_STATION)
+    public ResponseEntity<StationDTO> updateStation(
+            @PathVariable Long cityId,
+            @PathVariable Long stationId,
+            @RequestParam String stationName,
+            @RequestParam String zipCode,
+            @RequestParam String street,
+            @RequestParam String houseNumber,
+            @RequestParam String apartment,
+            @RequestParam String phone,
+            @RequestParam Double x,
+            @RequestParam Double y,
+            @RequestParam TransportType transportType) {
+
+        cityRepository
+                .findById(cityId)
+                .orElseThrow(() ->
+                        new NotFoundException(String.format("City with ID \"%s\" not found", cityId)));
 
 
-//        if (!city.getStationEntities()
-//                .contains(stationRepository.getByStationName(stationName))) {
+        StationEntity station = stationRepository
+                .findById(stationId)
+                .orElseThrow(() ->
+                        new NotFoundException(String.format("Station with ID \"%s\" not found", stationId)));
 
-            StationEntity station = stationRepository.saveAndFlush(
-                    StationEntity.makeDefault(
-                            stationName,
-                            city,
-                            zipCode,
-                            street,
-                            houseNumber,
-                            apartment,
-                            phone,
-                            x,
-                            y,
-                            transportType
-                    ));
+        station.setStationName(stationName);
+        station.setZipCode(zipCode);
+        station.setStreet(street);
+        station.setHouseNumber(houseNumber);
+        station.setApartment(apartment);
+        station.setPhone(phone);
+        station.setX(x);
+        station.setY(y);
+        station.setTransportType(transportType);
 
-            city.addStation(station);
+        stationRepository.saveAndFlush(station);
 
-//        } else {
-//
-//            StationEntity station = stationRepository.getByStationName(stationName);
-//
-//            updStation.setStationName(stationName);
-//            updStation.setZipCode(zipCode);
-//            updStation.setStreet(street);
-//            updStation.setHouseNumber(houseNumber);
-//            updStation.setApartment(apartment);
-//            updStation.setPhone(phone);
-//            updStation.setX(x);
-//            updStation.setY(y);
-//            updStation.setTransportType(transportType);
-//
-//            stationRepository.saveAndFlush(station);
-//        }
 
         return ResponseEntity.ok(stationDtoFactory.createStationDTO(station));
     }
