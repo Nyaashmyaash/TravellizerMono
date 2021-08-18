@@ -1,5 +1,6 @@
 package com.nyash.travellizermono.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nyash.travellizermono.api.entity.geography.CityEntity;
 import com.nyash.travellizermono.api.entity.geography.TransportType;
 import lombok.*;
@@ -15,7 +16,7 @@ public class StationDTO {
     @NonNull
     Long id;
 
-    @NonNull
+    @JsonIgnore
     CityEntity cityEntity;
 
     String stationName;

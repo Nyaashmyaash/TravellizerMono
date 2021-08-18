@@ -4,6 +4,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -64,33 +66,30 @@ public class CityEntity {
                 .build();
     }
 
+    /**
+     * Adds specified station to the city station list
+     *
+     *
+     */
+    public void addStation(StationEntity stationEntity) {
+        if (stationEntities == null) {
+            stationEntities = new HashSet<>();
+        }
+        stationEntities.add(stationEntity);
 
-//    /**
-//     * Adds specified station to the city station list
-//     *
-//     * @param station
-//     */
-//    public Station addStation(final TransportType transportType) {
-//        if (stations == null) {
-//            stations = new HashSet<>();
-//        }
-//        Station station = new Station(this, transportType);
-//        stations.add(station);
-//
-//        return station;
-//    }
-//
-//    /**
-//     * Removes specified station from city station list
-//     *
-//     * @param station
-//     */
-//    public void removeStation(final Station station) {
-//        Objects.requireNonNull(station, "station parameter is not initialized");
-//        if (stations == null) {
-//            return;
-//        }
-//        stations.remove(station);
-//    }
+    }
+
+    /**
+     * Removes specified station from city station list
+     *
+     * @param station
+     */
+    public void removeStation(final StationEntity station) {
+        Objects.requireNonNull(station, "station parameter is not initialized");
+        if (stationEntities == null) {
+            return;
+        }
+        stationEntities.remove(station);
+    }
 
 }
