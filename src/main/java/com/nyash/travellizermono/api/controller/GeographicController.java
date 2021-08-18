@@ -23,6 +23,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import java.util.List;
 
+/**
+ *
+ *{@link GeographicController} is REST controller that handles city and station-related requests
+ *
+ * @author Nyash
+ */
+
 @RequiredArgsConstructor
 @ExtensionMethod(StringChecker.class)
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
@@ -30,14 +37,24 @@ import java.util.List;
 @Transactional
 public class GeographicController {
 
+
     CityRepository cityRepository;
 
     StationRepository stationRepository;
 
+    /**
+     *City DTO <-> Entity transformation
+     */
     CityDTOFactory cityDtoFactory;
 
+    /**
+     *Station DTO <-> Entity transformation
+     */
     StationDTOFactory stationDtoFactory;
 
+    /**
+     * Endpoints
+     */
     public static final String FETCH_CITIES = "api/cities";
     public static final String CREATE_CITY = "api/cities";
     public static final String UPDATE_CITY = "api/cities/{cityId}";
@@ -47,7 +64,12 @@ public class GeographicController {
     public static final String UPDATE_STATION = "api/cities/{cityId}/stations/{stationId}";
     public static final String DELETE_STATION = "api/cities/{cityId}/stations/{stationId}";
 
-
+    /**
+     * Returns all existing cities by filter
+     *
+     * @param filter
+     * @return
+     */
     @GetMapping(FETCH_CITIES)
     public ResponseEntity<List<CityDTO>> fetchCities(
             @RequestParam(defaultValue = "") String filter) {
@@ -59,6 +81,14 @@ public class GeographicController {
         return ResponseEntity.ok(cityDtoFactory.createCityDTOList(cities));
     }
 
+    /**
+     * Creates new city instance
+     *
+     * @param name
+     * @param district
+     * @param region
+     * @return
+     */
     @PostMapping(CREATE_CITY)
     public ResponseEntity<CityDTO> createCity(
             @RequestParam String name,
@@ -74,6 +104,15 @@ public class GeographicController {
         return ResponseEntity.ok(cityDtoFactory.createCityDTO(city));
     }
 
+    /**
+     * Updates city instance
+     *
+     * @param cityId
+     * @param name
+     * @param district
+     * @param region
+     * @return
+     */
     @PostMapping(UPDATE_CITY)
     public ResponseEntity<CityDTO> updateCity(
             @PathVariable Long cityId,
@@ -95,6 +134,12 @@ public class GeographicController {
         return ResponseEntity.ok(cityDtoFactory.createCityDTO(updatedCity));
     }
 
+    /**
+     * Delete city instance
+     *
+     * @param cityId
+     * @return
+     */
     @DeleteMapping(DELETE_CITY)
     public ResponseEntity<AckDTO> deleteCity(
             @PathVariable Long cityId) {
@@ -105,6 +150,13 @@ public class GeographicController {
         return ResponseEntity.ok(AckDTO.makeDefault(true));
     }
 
+    /**
+     * Returns all stations in this city
+     *
+     * @param cityId
+     * @param filter
+     * @return
+     */
     @GetMapping(FETCH_STATIONS)
     public ResponseEntity<List<StationDTO>> fetchStations(
             @PathVariable Long cityId,
@@ -120,6 +172,21 @@ public class GeographicController {
         return ResponseEntity.ok(stationDtoFactory.createStationDTOList(stations));
     }
 
+    /**
+     * Creates new station instance
+     *
+     * @param cityId
+     * @param stationName
+     * @param zipCode
+     * @param street
+     * @param houseNumber
+     * @param apartment
+     * @param phone
+     * @param x
+     * @param y
+     * @param transportType
+     * @return
+     */
     @PostMapping(CREATE_STATION)
     public ResponseEntity<StationDTO> createStation(
             @PathVariable Long cityId,
@@ -157,6 +224,22 @@ public class GeographicController {
         return ResponseEntity.ok(stationDtoFactory.createStationDTO(station));
     }
 
+    /**
+     * Updates station instance
+     *
+     * @param cityId
+     * @param stationId
+     * @param stationName
+     * @param zipCode
+     * @param street
+     * @param houseNumber
+     * @param apartment
+     * @param phone
+     * @param x
+     * @param y
+     * @param transportType
+     * @return
+     */
     @PostMapping(UPDATE_STATION)
     public ResponseEntity<StationDTO> updateStation(
             @PathVariable Long cityId,
@@ -197,6 +280,13 @@ public class GeographicController {
         return ResponseEntity.ok(stationDtoFactory.createStationDTO(station));
     }
 
+    /**
+     * Delete station instance
+     *
+     * @param cityId
+     * @param stationId
+     * @return
+     */
     @DeleteMapping(DELETE_STATION)
     public ResponseEntity<AckDTO> deleteStation(
             @PathVariable Long cityId,
