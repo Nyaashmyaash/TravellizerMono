@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @ExtensionMethod(StringChecker.class)
@@ -49,7 +50,7 @@ public class GeographicController {
 
 
     @GetMapping(FETCH_CITIES)
-    public ResponseEntity<List<CityDTO>> fetchCities (
+    public ResponseEntity<List<CityDTO>> fetchCities(
             @RequestParam(defaultValue = "") String filter) {
 
         boolean isFiltered = !filter.trim().isEmpty();
@@ -67,9 +68,9 @@ public class GeographicController {
 
         CityEntity city = cityRepository.saveAndFlush(
                 CityEntity.makeDefault(
-                    name,
-                    district,
-                    region));
+                        name,
+                        district,
+                        region));
 
         return ResponseEntity.ok(cityDtoFactory.createCityDTO(city));
     }
@@ -108,7 +109,7 @@ public class GeographicController {
     @GetMapping(FETCH_STATIONS)
     public ResponseEntity<List<StationDTO>> fetchStations(
             @PathVariable Long cityId,
-            @RequestParam(defaultValue = "")String filter) {
+            @RequestParam(defaultValue = "") String filter) {
 
         boolean isFiltered = !filter.trim().isEmpty();
 
@@ -119,8 +120,8 @@ public class GeographicController {
 
     @PutMapping(CREATE_OR_UPDATE_STATION)
     public ResponseEntity<StationDTO> createOrUpdateStation(
-            @PathVariable String cityId,
-            @RequestParam(value = "station_name", required = false) Optional<String> optionalStationName,
+            @PathVariable Long cityId,
+            @RequestParam String stationName,
             @RequestParam String zipCode,
             @RequestParam String street,
             @RequestParam String houseNumber,
@@ -130,10 +131,49 @@ public class GeographicController {
             @RequestParam Double y,
             @RequestParam TransportType transportType) {
 
-        if (!optionalStationName.isPresent()) {
-            throw new BadRequestException("Station's name can't be empty.");
-        }
+        CityEntity city = cityRepository
+                .findById(cityId)
+                .orElseThrow(() ->
+                        new NotFoundException(String.format("City with ID \"%s\" not found", cityId)));
 
-        return null;
+
+
+//        if (!city.getStationEntities()
+//                .contains(stationRepository.getByStationName(stationName))) {
+
+            StationEntity station = stationRepository.saveAndFlush(
+                    StationEntity.makeDefault(
+                            stationName,
+                            city,
+                            zipCode,
+                            street,
+                            houseNumber,
+                            apartment,
+                            phone,
+                            x,
+                            y,
+                            transportType
+                    ));
+
+            city.addStation(station);
+
+//        } else {
+//
+//            StationEntity station = stationRepository.getByStationName(stationName);
+//
+//            updStation.setStationName(stationName);
+//            updStation.setZipCode(zipCode);
+//            updStation.setStreet(street);
+//            updStation.setHouseNumber(houseNumber);
+//            updStation.setApartment(apartment);
+//            updStation.setPhone(phone);
+//            updStation.setX(x);
+//            updStation.setY(y);
+//            updStation.setTransportType(transportType);
+//
+//            stationRepository.saveAndFlush(station);
+//        }
+
+        return ResponseEntity.ok(stationDtoFactory.createStationDTO(station));
     }
 }

@@ -3,6 +3,7 @@ package com.nyash.travellizermono.api.repository;
 import com.nyash.travellizermono.api.entity.geography.CityEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import lombok.NonNull;
 
 import java.util.List;
 

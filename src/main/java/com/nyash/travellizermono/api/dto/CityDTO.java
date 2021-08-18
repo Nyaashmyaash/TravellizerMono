@@ -1,6 +1,6 @@
 package com.nyash.travellizermono.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nyash.travellizermono.api.entity.geography.StationEntity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -25,5 +25,6 @@ public class CityDTO {
     @NonNull
     String region;
 
+    @JsonIgnore
     Set<StationEntity> stations;
 }
