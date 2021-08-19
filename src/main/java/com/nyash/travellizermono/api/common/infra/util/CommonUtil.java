@@ -1,5 +1,9 @@
 package com.nyash.travellizermono.api.common.infra.util;
 
+import com.nyash.travellizermono.api.common.infra.exception.NotFoundException;
+import com.nyash.travellizermono.api.entity.geography.CityEntity;
+import com.nyash.travellizermono.api.repository.CityRepository;
+import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -14,16 +18,15 @@ import java.util.Set;
  * @author Nyash
  */
 public class CommonUtil {
-    private CommonUtil() {
-    }
 
     /**
      * Returns not-null unmodifiable copy of the source set
+     *
      * @param source
      * @param <T>
      * @return
      */
-    public static <T> Set <T> getSafeSet(Set<T> source) {
+    public static <T> Set<T> getSafeSet(Set<T> source) {
         return Collections.unmodifiableSet(Optional.ofNullable(source).orElse(
                 Collections.emptySet()));
     }
@@ -34,7 +37,7 @@ public class CommonUtil {
      * @param source
      * @return
      */
-    public static <T>List<T> getSafeList(List<T> source){
+    public static <T> List<T> getSafeList(List<T> source) {
         return Collections.unmodifiableList(Optional.ofNullable(source).orElse(
                 Collections.emptyList()));
     }
@@ -42,10 +45,11 @@ public class CommonUtil {
     /**
      * Dynamically converts param into string representation using all
      * object state
+     *
      * @param param
      * @return
      */
-    public static String toString (Object param) {
+    public static String toString(Object param) {
         return ReflectionToStringBuilder.toString(param, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

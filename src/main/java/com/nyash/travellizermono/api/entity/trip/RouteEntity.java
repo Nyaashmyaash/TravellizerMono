@@ -4,7 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -49,14 +49,14 @@ public class RouteEntity {
      */
     @NonNull
     @Column(name = "START_TIME")
-    LocalDateTime startTime;
+    LocalTime startTime;
 
     /**
      * End time of the route
      */
     @NonNull
     @Column(name = "END_TIME")
-    LocalDateTime endTime;
+    LocalTime endTime;
 
     /**
      * Current price of the route

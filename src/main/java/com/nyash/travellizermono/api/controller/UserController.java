@@ -27,6 +27,8 @@ import java.util.List;
 public class UserController {
 
     //TODO: add logging to user controller
+    //TODO: add commentaries
+    //TODO: add authorise
 
     UserRepository userRepository;
 

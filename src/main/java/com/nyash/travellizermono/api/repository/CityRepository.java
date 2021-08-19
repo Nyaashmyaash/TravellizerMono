@@ -7,7 +7,10 @@ import lombok.NonNull;
 
 import java.util.List;
 
-
+/**
+ * Defines CRUD methods to access City objects in the persistent storage
+ * @author Nyash
+ */
 public interface CityRepository extends JpaRepository<CityEntity, Long> {
 
     @Query("SELECT c FROM CityEntity c " +
