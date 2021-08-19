@@ -6,6 +6,7 @@ import com.nyash.travellizermono.api.entity.trip.RouteEntity;
 import com.nyash.travellizermono.api.entity.trip.TripEntity;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 

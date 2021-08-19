@@ -1,6 +1,8 @@
 package com.nyash.travellizermono.api.controller;
 
+import com.nyash.travellizermono.api.common.infra.exception.NotFoundException;
 import com.nyash.travellizermono.api.common.infra.util.StringChecker;
+import com.nyash.travellizermono.api.dto.AckDTO;
 import com.nyash.travellizermono.api.dto.CityDTO;
 import com.nyash.travellizermono.api.dto.RouteDTO;
 import com.nyash.travellizermono.api.entity.geography.CityEntity;
@@ -13,11 +15,10 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.ExtensionMethod;
 import lombok.experimental.FieldDefaults;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.time.LocalTime;
@@ -58,8 +59,8 @@ public class TripController {
     public ResponseEntity<RouteDTO> createRoute(
             @RequestParam String start,
             @RequestParam String destination,
-            @RequestParam LocalTime startTime,
-            @RequestParam LocalTime endTime,
+            @RequestParam @DateTimeFormat(pattern = "H[H]:mm:ss") LocalTime startTime,
+            @RequestParam @DateTimeFormat(pattern = "H[H]:mm:ss") LocalTime endTime,
             @RequestParam Double price) {
 
         RouteEntity route = routeRepository.saveAndFlush(
@@ -73,5 +74,40 @@ public class TripController {
         );
 
         return ResponseEntity.ok(routeDtoFactory.createRouteDTO(route));
+    }
+
+    @PostMapping(UPDATE_ROUTE)
+    public ResponseEntity<RouteDTO> updateRoute(
+            @PathVariable Long routeId,
+            @RequestParam String start,
+            @RequestParam String destination,
+            @RequestParam @DateTimeFormat(pattern = "H[H]:mm:ss") LocalTime startTime,
+            @RequestParam @DateTimeFormat(pattern = "H[H]:mm:ss") LocalTime endTime,
+            @RequestParam Double price) {
+
+        RouteEntity route = routeRepository
+                .findById(routeId)
+                .orElseThrow(() ->
+                        new NotFoundException(String.format("Route with ID \"%s\" not found", routeId)));
+
+        route.setStart(start);
+        route.setDestination(destination);
+        route.setStartTime(startTime);
+        route.setEndTime(endTime);
+        route.setPrice(price);
+
+        routeRepository.saveAndFlush(route);
+
+        return ResponseEntity.ok(routeDtoFactory.createRouteDTO(route));
+    }
+
+    @DeleteMapping(DELETE_ROUTE)
+    public ResponseEntity<AckDTO> deleteRoute(
+            @PathVariable Long routeId) {
+
+        if (routeRepository.existsById(routeId)) {
+            routeRepository.deleteById(routeId);
+        }
+        return ResponseEntity.ok(AckDTO.makeDefault(true));
     }
 }

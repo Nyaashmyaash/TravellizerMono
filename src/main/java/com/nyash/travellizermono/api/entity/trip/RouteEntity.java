@@ -1,6 +1,5 @@
 package com.nyash.travellizermono.api.entity.trip;
 
-import com.nyash.travellizermono.api.entity.geography.CityEntity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

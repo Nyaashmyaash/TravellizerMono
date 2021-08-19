@@ -17,7 +17,7 @@ public interface TripRepository extends JpaRepository<TripEntity, Long> {
      * @param routeId
      * @return
      */
-    List<TripEntity> findByRouteId(@Param("routeId") Long routeId);
+//    List<TripEntity> findByRouteId(@Param("routeId") Long routeId);
 
-    TripEntity findByRouteIdAndStartDate(Long routeId, LocalDate date);
+//    TripEntity findByRouteIdAndStartDate(Long routeId, LocalDate date);
 }
