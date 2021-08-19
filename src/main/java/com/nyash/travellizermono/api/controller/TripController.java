@@ -1,5 +1,6 @@
 package com.nyash.travellizermono.api.controller;
 
+import com.nyash.travellizermono.api.common.infra.exception.NotFoundException;
 import com.nyash.travellizermono.api.common.infra.util.StringChecker;
 import com.nyash.travellizermono.api.dto.CityDTO;
 import com.nyash.travellizermono.api.dto.RouteDTO;
@@ -16,6 +17,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -71,6 +73,31 @@ public class TripController {
                         price
                 )
         );
+
+        return ResponseEntity.ok(routeDtoFactory.createRouteDTO(route));
+    }
+
+    @PostMapping(UPDATE_ROUTE)
+    public ResponseEntity<RouteDTO> updateRoute(
+            @PathVariable Long routeId,
+            @RequestParam String start,
+            @RequestParam String destination,
+            @RequestParam LocalTime startTime,
+            @RequestParam LocalTime endTime,
+            @RequestParam Double price) {
+
+        RouteEntity route = routeRepository
+                .findById(routeId)
+                .orElseThrow(() ->
+                        new NotFoundException(String.format("Route with ID \"%s\" not found", routeId)));
+
+        route.setStart(start);
+        route.setDestination(destination);
+        route.setStartTime(startTime);
+        route.setEndTime(endTime);
+        route.setPrice(price);
+
+        routeRepository.saveAndFlush(route);
 
         return ResponseEntity.ok(routeDtoFactory.createRouteDTO(route));
     }
