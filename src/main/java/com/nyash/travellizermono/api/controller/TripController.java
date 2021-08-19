@@ -1,7 +1,9 @@
 package com.nyash.travellizermono.api.controller;
 
 import com.nyash.travellizermono.api.common.infra.util.StringChecker;
+import com.nyash.travellizermono.api.dto.CityDTO;
 import com.nyash.travellizermono.api.dto.RouteDTO;
+import com.nyash.travellizermono.api.entity.geography.CityEntity;
 import com.nyash.travellizermono.api.entity.trip.RouteEntity;
 import com.nyash.travellizermono.api.factory.RouteDTOFactory;
 import com.nyash.travellizermono.api.factory.TripDTOFactory;
@@ -14,9 +16,11 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
+import java.time.LocalTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -48,5 +52,26 @@ public class TripController {
         List<RouteEntity> routes = routeRepository.findAllByFilter(isFiltered, filter);
 
         return ResponseEntity.ok(routeDtoFactory.createRouteDTOList(routes));
+    }
+
+    @PostMapping(CREATE_ROUTE)
+    public ResponseEntity<RouteDTO> createRoute(
+            @RequestParam String start,
+            @RequestParam String destination,
+            @RequestParam LocalTime startTime,
+            @RequestParam LocalTime endTime,
+            @RequestParam Double price) {
+
+        RouteEntity route = routeRepository.saveAndFlush(
+                RouteEntity.makeDefault(
+                        start,
+                        destination,
+                        startTime,
+                        endTime,
+                        price
+                )
+        );
+
+        return ResponseEntity.ok(routeDtoFactory.createRouteDTO(route));
     }
 }

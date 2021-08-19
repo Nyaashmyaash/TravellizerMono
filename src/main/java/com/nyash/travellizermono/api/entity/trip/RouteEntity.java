@@ -1,5 +1,6 @@
 package com.nyash.travellizermono.api.entity.trip;
 
+import com.nyash.travellizermono.api.entity.geography.CityEntity;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -83,5 +84,20 @@ public class RouteEntity {
         tripEntity.setRouteEntity(this);
 
         return tripEntity;
+    }
+
+    public static RouteEntity makeDefault(
+            String start,
+            String destination,
+            LocalTime startTime,
+            LocalTime endTime,
+            Double price) {
+        return builder()
+                .start(start)
+                .destination(destination)
+                .startTime(startTime)
+                .endTime(endTime)
+                .price(price)
+                .build();
     }
 }

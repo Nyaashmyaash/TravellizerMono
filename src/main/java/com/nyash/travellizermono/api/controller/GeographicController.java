@@ -100,7 +100,9 @@ public class GeographicController {
                 CityEntity.makeDefault(
                         name,
                         district,
-                        region));
+                        region
+                )
+        );
 
         return ResponseEntity.ok(cityDtoFactory.createCityDTO(city));
     }
