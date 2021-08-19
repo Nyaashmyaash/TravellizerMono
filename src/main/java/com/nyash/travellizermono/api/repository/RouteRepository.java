@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface RouteRepository extends JpaRepository<RouteEntity, Long> {
 
-    @Query("SELECT r FROM RouteEntity  r " +
+    @Query("SELECT r FROM RouteEntity r " +
             "WHERE :isFiltered = FALSE " +
             "OR (LOWER(r.start) LIKE LOWER(CONCAT('%', :filter, '%'))" +
             "OR LOWER(r.destination) LIKE LOWER(CONCAT('%', :filter, '%'))) " +

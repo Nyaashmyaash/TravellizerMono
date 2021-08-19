@@ -17,15 +17,18 @@ public class UserDTO {
     @NonNull
     Long id;
 
+    @JsonProperty("user_name")
     @NonNull
     String userName;
 
     @NonNull
     String password;
 
+    @JsonProperty("first_name")
     @NonNull
     String firstName;
 
+    @JsonProperty("last_name")
     @NonNull
     String lastName;
 
@@ -36,6 +39,7 @@ public class UserDTO {
 //    @NonNull
 //    String registrationIp;
 
+    @JsonProperty("user_role")
     @NonNull
     UserRole userRole;
 }

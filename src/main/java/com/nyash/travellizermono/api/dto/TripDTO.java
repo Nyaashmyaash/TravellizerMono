@@ -1,5 +1,6 @@
 package com.nyash.travellizermono.api.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -17,15 +18,20 @@ public class TripDTO {
 
     @NonNull
     Long routeId;
+
+    @JsonProperty("start_date")
     @NonNull
     LocalDate startDate;
 
+    @JsonProperty("end_date")
     @NonNull
     LocalDate endDate;
 
+    @JsonProperty("max_seats")
     @NonNull
     Integer maxSeats;
 
+    @JsonProperty("available_seats")
     @NonNull
     Integer availableSeats;
 
