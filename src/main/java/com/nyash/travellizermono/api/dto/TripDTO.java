@@ -12,17 +12,23 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TripDTO {
 
+    @NonNull
     Long id;
 
+    @NonNull
     Long routeId;
-
+    @NonNull
     LocalDate startDate;
 
+    @NonNull
     LocalDate endDate;
 
+    @NonNull
     Integer maxSeats;
 
+    @NonNull
     Integer availableSeats;
 
+    @NonNull
     Double price;
 }
