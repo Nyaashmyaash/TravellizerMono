@@ -1,10 +1,12 @@
 package com.nyash.travellizermono.api.controller;
 
+import com.nyash.travellizermono.api.common.infra.exception.NotFoundException;
 import com.nyash.travellizermono.api.common.infra.util.StringChecker;
 import com.nyash.travellizermono.api.dto.AckDTO;
 import com.nyash.travellizermono.api.dto.TripDTO;
 import com.nyash.travellizermono.api.entity.trip.TripEntity;
 import com.nyash.travellizermono.api.factory.TripDTOFactory;
+import com.nyash.travellizermono.api.repository.RouteRepository;
 import com.nyash.travellizermono.api.service.TripService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.List;
 
 @RequiredArgsConstructor
 @ExtensionMethod(StringChecker.class)
@@ -31,6 +34,9 @@ public class TripController {
 
     TripDTOFactory tripDtoFactory;
 
+    RouteRepository routeRepository;
+
+    public static final String FETCH_TRIPS = "api/trips";
     public static final String CREATE_TRIP = "api/trips";
     public static final String DELETE_TRIP = "api/trips/{tripId}";
 
@@ -61,4 +67,17 @@ public class TripController {
         return ResponseEntity.ok(AckDTO.makeDefault(true));
     }
 
+    @GetMapping(FETCH_TRIPS)
+    public ResponseEntity<List<TripDTO>> fetchTrips(
+            @RequestParam Long routeId) {
+
+        routeRepository
+                .findById(routeId)
+                .orElseThrow(() ->
+                        new NotFoundException(String.format("Route with ID \"%s\" not found", routeId)));
+
+        List<TripEntity> trips = tripService.fetchTrips(routeId);
+
+        return ResponseEntity.ok(tripDtoFactory.createTripDTOList(trips));
+    }
 }
