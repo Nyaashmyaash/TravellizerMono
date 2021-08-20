@@ -107,10 +107,12 @@ public class OrderEntity {
         this.state = OrderState.COMPLETED;
     }
 
+    @Transient
     public boolean isCompleted() {
         return state == OrderState.COMPLETED;
     }
 
+    @Transient
     public boolean isCancelled() {
         return state == OrderState.CANCELLED;
     }

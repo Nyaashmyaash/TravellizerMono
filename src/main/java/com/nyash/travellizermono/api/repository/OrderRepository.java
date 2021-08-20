@@ -14,7 +14,17 @@ import java.util.List;
  */
 public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
 
+    /**
+     * Returns all the orders for given trip
+     * @param tripId
+     * @return
+     */
     List<OrderEntity> findByTripId(@Param("tripId") Long tripId);
 
-
+    /**
+     * Returns all the orders for given user
+     * @param userId
+     * @return
+     */
+    List<OrderEntity> findByCreatedBy(String userId);
 }
