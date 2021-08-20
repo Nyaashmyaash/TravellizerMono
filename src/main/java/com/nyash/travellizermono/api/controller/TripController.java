@@ -29,6 +29,7 @@ import java.util.List;
 public class TripController {
 
     //TODO: available seats feature
+    //TODO: add time parameter
 
     TripService tripService;
 
@@ -78,6 +79,9 @@ public class TripController {
 
         List<TripEntity> trips = tripService.fetchTrips(routeId);
 
+        if (trips.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
         return ResponseEntity.ok(tripDtoFactory.createTripDTOList(trips));
     }
 }

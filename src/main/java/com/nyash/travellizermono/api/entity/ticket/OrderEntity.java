@@ -22,6 +22,8 @@ import java.time.LocalDateTime;
 @Table(name = "ORDERS")
 public class OrderEntity {
 
+    public static final String FIELD_TRIP_ID = "tripId";
+
     /**
      * Current order id
      */
