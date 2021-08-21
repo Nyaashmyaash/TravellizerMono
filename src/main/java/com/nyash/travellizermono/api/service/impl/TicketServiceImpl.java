@@ -2,6 +2,7 @@ package com.nyash.travellizermono.api.service.impl;
 
 import com.nyash.travellizermono.api.common.generator.TicketNumberGenerator;
 import com.nyash.travellizermono.api.common.generator.text.StringGenerator;
+import com.nyash.travellizermono.api.common.infra.util.Checks;
 import com.nyash.travellizermono.api.entity.ticket.OrderEntity;
 import com.nyash.travellizermono.api.entity.ticket.TicketEntity;
 import com.nyash.travellizermono.api.repository.OrderRepository;
@@ -38,7 +39,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public List<OrderEntity> findReservations(String tripId) {
+    public List<OrderEntity> findReservations(Long tripId) {
         return orderRepository.findByTripId(tripId);
     }
 
@@ -68,17 +69,26 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public TicketEntity buyTicket(String tripId, String clientName) {
-        return null;
+    public TicketEntity buyTicket(final String tripId, final String clientName) {
+
+        Checks.checkParameter(tripId != null, "Trip identifier should be not null");
+
+        TicketEntity ticket = new TicketEntity();
+        ticket.setTripId(tripId);
+        ticket.generateUid(ticketNumberGenerator);
+        ticket.setName(clientName);
+        ticketRepository.save(ticket);
+
+        return ticket;
     }
 
     @Override
     public List<OrderEntity> findOrders() {
-        return null;
+        return orderRepository.findAll();
     }
 
     @Override
     public List<OrderEntity> findOrders(String userId) {
-        return null;
+        return orderRepository.findByCreatedBy(userId);
     }
 }

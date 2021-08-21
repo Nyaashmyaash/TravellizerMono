@@ -21,7 +21,7 @@ public interface TicketService {
      * @param tripId
      * @return
      */
-    List<OrderEntity> findReservations(String tripId);
+    List<OrderEntity> findReservations(Long tripId);
 
     /**
      * Puts an order
