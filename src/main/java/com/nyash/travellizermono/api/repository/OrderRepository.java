@@ -19,7 +19,7 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
      * @param tripId
      * @return
      */
-    List<OrderEntity> findByTripId(@Param("tripId") Long tripId);
+    List<OrderEntity> findByTripId(@Param("tripId") String tripId);
 
     /**
      * Returns all the orders for given user
