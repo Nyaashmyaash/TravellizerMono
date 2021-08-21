@@ -1,41 +1,50 @@
 package com.nyash.travellizermono.api.controller;
 
+import com.nyash.travellizermono.api.common.infra.exception.NotFoundException;
 import com.nyash.travellizermono.api.common.infra.util.StringChecker;
+import com.nyash.travellizermono.api.dto.AckDTO;
 import com.nyash.travellizermono.api.dto.TripDTO;
 import com.nyash.travellizermono.api.entity.trip.TripEntity;
 import com.nyash.travellizermono.api.factory.TripDTOFactory;
-import com.nyash.travellizermono.api.repository.TripRepository;
+import com.nyash.travellizermono.api.repository.RouteRepository;
 import com.nyash.travellizermono.api.service.TripService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.ExtensionMethod;
 import lombok.experimental.FieldDefaults;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.List;
 
 @RequiredArgsConstructor
 @ExtensionMethod(StringChecker.class)
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
-@Controller
+@RestController
 @Transactional
 public class TripController {
+
+    //TODO: available seats feature
+    //TODO: add time parameter
 
     TripService tripService;
 
     TripDTOFactory tripDtoFactory;
 
+    RouteRepository routeRepository;
+
+    public static final String FETCH_TRIPS = "api/trips";
     public static final String CREATE_TRIP = "api/trips";
+    public static final String DELETE_TRIP = "api/trips/{tripId}";
 
     @PostMapping(CREATE_TRIP)
     public ResponseEntity<TripDTO> createTrip(
             @RequestParam Long routeId,
-            @RequestParam LocalDate date) {
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
 
         TripEntity trip = tripService.fetchTrip(routeId, date);
 
@@ -48,4 +57,31 @@ public class TripController {
         return ResponseEntity.status(HttpStatus.CREATED).body(tripDtoFactory.createTripDTO(trip));
     }
 
+    @DeleteMapping(DELETE_TRIP)
+    public ResponseEntity<AckDTO> deleteTrip(
+            @PathVariable Long tripId) {
+
+        if (tripService.fetchTripById(tripId).isPresent()) {
+            tripService.deleteTrip(tripId);
+        }
+
+        return ResponseEntity.ok(AckDTO.makeDefault(true));
+    }
+
+    @GetMapping(FETCH_TRIPS)
+    public ResponseEntity<List<TripDTO>> fetchTrips(
+            @RequestParam Long routeId) {
+
+        routeRepository
+                .findById(routeId)
+                .orElseThrow(() ->
+                        new NotFoundException(String.format("Route with ID \"%s\" not found", routeId)));
+
+        List<TripEntity> trips = tripService.fetchTrips(routeId);
+
+        if (trips.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(tripDtoFactory.createTripDTOList(trips));
+    }
 }

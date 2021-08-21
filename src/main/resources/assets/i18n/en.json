@@ -1,0 +1,52 @@
+{
+  "header" : {
+    "user" : "Current user"
+  },
+	"TITLE" : "Germes project",
+	"CITIES" : "Cities",
+	"CITY_NAME": "Name",
+	"CITY_DISTRICT" : "District",
+	"CITY_REGION" : "Region",
+  "menu": {
+    "trips" : "Trips",
+    "tickets" : "Tickets",
+    "settings": "Settings"
+  },
+  "settings": {
+    "login" : "Login",
+    "login.success": "Login was successful",
+    "login.failure": "Credentials are incorrect or server not available"
+  },
+  "order": {
+    "trip": "Trip",
+    "route": "Route",
+    "ticketId": "Ticket",
+    "client": "Client name",
+    "state": "State",
+    "dueDate": "Due date",
+    "create": "Create order",
+    "phone": "Phone",
+    "created": "Created at",
+    "name.error": "Please enter valid name",
+    "phone.error": "Please enter valid phone",
+    "order.create.success": "Order was successfully created",
+    "order.create.failure": "Internal failure while creating the order"
+  },
+  "trip": {
+    "prompt.start" : "Pick starting point",
+    "prompt.destination" : "Pick destination point",
+    "date": "Choose date",
+    "search": "Search"
+  },
+  "route": {
+    "start" : "Start",
+    "destination": "Destination",
+    "startTime": "Start time",
+    "endTime": "End time",
+    "price": "Price"
+  },
+  "button": {
+    "cancel": "Cancel",
+    "save": "Save"
+  }
+}

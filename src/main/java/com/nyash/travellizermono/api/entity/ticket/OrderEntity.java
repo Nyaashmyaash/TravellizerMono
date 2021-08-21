@@ -22,6 +22,8 @@ import java.time.LocalDateTime;
 @Table(name = "ORDERS")
 public class OrderEntity {
 
+    public static final String FIELD_TRIP_ID = "tripId";
+
     /**
      * Current order id
      */
@@ -105,10 +107,12 @@ public class OrderEntity {
         this.state = OrderState.COMPLETED;
     }
 
+    @Transient
     public boolean isCompleted() {
         return state == OrderState.COMPLETED;
     }
 
+    @Transient
     public boolean isCancelled() {
         return state == OrderState.CANCELLED;
     }
