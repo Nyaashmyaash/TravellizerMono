@@ -80,6 +80,11 @@ public class OrderEntity {
     @Column(name = "CANCELLATION_REASON", length = 128)
     String cancellationReason;
 
+    /**
+     * Person who created specific Entity
+     */
+    String createdBy;
+
 //    public Order() {
 //        state = OrderState.CREATED;
 //        //TODO use application settings and check the trip start time

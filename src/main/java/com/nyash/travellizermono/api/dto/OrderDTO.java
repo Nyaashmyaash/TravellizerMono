@@ -34,4 +34,7 @@ public class OrderDTO {
 
     @JsonProperty("created_at")
     LocalDateTime createdAt;
+
+    @JsonProperty("created_by")
+    String createdBy;
 }

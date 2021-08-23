@@ -40,7 +40,7 @@ public class TicketEntity {
      */
     @NonNull
     @Column(name = "TRIP_ID")
-    private String tripId;
+    private Long tripId;
 
     /**
      * Client name
