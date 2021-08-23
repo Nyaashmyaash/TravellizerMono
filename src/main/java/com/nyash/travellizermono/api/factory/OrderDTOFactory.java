@@ -23,6 +23,7 @@ public class OrderDTOFactory {
                 .clientPhone(orderEntity.getClientPhone())
                 .cancellationReason(orderEntity.getCancellationReason())
                 .createdAt(LocalDateTime.now())
+                .createdBy(orderEntity.getCreatedBy())
                 .build();
     }
 

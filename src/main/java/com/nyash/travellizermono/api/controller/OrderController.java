@@ -10,12 +10,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.ExtensionMethod;
 import lombok.experimental.FieldDefaults;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.awt.*;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -30,8 +31,10 @@ public class OrderController {
     OrderDTOFactory orderDtoFactory;
 
     public static final String FETCH_ORDERS_FOR_USERS = "api/users/{userId}/orders";
+    public static final String FETCH_FOR_CURRENT_USER_ORDERS = "api/users/orders";
     public static final String FETCH_ORDERS_FOR_CURRENT_USER = "api/users/";
     public static final String FETCH_ORDERS = "api/orders";
+    public static final String CREATE_ORDER = "api/orders";
 
     @GetMapping(FETCH_ORDERS_FOR_USERS)
     public ResponseEntity<List<OrderDTO>> fetchOrdersForUsers(@PathVariable String userId) {
@@ -53,6 +56,22 @@ public class OrderController {
         List<OrderEntity> orders = ticketService.findOrders();
 
         return ResponseEntity.ok(orderDtoFactory.createOrderDTOList(orders));
+    }
+
+    @PostMapping(value = CREATE_ORDER, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void createOrder(
+            HttpServletRequest request,
+            @RequestParam Long tripId,
+            @RequestParam String clientName,
+            @RequestParam String clientPhone) {
+
+        OrderEntity order = new OrderEntity();
+
+        order.setTripId(tripId);
+        order.setClientName(clientName);
+        order.setClientPhone(clientPhone);
+        order.setCre
+
     }
 
 
