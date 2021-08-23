@@ -1,5 +1,6 @@
 package com.nyash.travellizermono.api.controller;
 
+import com.nyash.travellizermono.api.common.infra.util.SecurityUtil;
 import com.nyash.travellizermono.api.common.infra.util.StringChecker;
 import com.nyash.travellizermono.api.dto.OrderDTO;
 import com.nyash.travellizermono.api.entity.ticket.OrderEntity;
@@ -58,7 +59,7 @@ public class OrderController {
         return ResponseEntity.ok(orderDtoFactory.createOrderDTOList(orders));
     }
 
-    @PostMapping(value = CREATE_ORDER, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "api/orders", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void createOrder(
             HttpServletRequest request,
             @RequestParam Long tripId,
@@ -70,8 +71,9 @@ public class OrderController {
         order.setTripId(tripId);
         order.setClientName(clientName);
         order.setClientPhone(clientPhone);
-        order.setCre
+        order.setCreatedBy(SecurityUtil.getUserID(request::getHeader));
 
+        ticketService.makeReservation(order);
     }
 
 
