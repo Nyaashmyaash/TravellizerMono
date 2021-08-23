@@ -59,7 +59,7 @@ public class OrderController {
         return ResponseEntity.ok(orderDtoFactory.createOrderDTOList(orders));
     }
 
-    @PostMapping(path = "api/orders", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = CREATE_ORDER, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void createOrder(
             HttpServletRequest request,
             @RequestParam Long tripId,
