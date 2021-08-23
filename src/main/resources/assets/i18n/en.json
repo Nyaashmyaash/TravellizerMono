@@ -2,7 +2,7 @@
   "header" : {
     "user" : "Current user"
   },
-	"TITLE" : "Germes project",
+	"TITLE" : "Travellizer project",
 	"CITIES" : "Cities",
 	"CITY_NAME": "Name",
 	"CITY_DISTRICT" : "District",
