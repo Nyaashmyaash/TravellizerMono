@@ -14,7 +14,7 @@ public interface TicketService {
      * @param tripId
      * @return
      */
-    List<TicketEntity> findTickets(String tripId);
+    List<TicketEntity> findTickets(Long tripId);
 
     /**
      * Returns all the reservations for the specified trip
@@ -48,7 +48,7 @@ public interface TicketService {
      * @param clientName
      * @return
      */
-    TicketEntity buyTicket(String tripId, String clientName);
+    TicketEntity buyTicket(Long tripId, String clientName);
 
     /**
      * Returns all the orders

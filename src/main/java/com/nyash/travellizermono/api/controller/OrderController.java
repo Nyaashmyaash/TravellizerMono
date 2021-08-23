@@ -4,6 +4,7 @@ import com.nyash.travellizermono.api.common.infra.util.SecurityUtil;
 import com.nyash.travellizermono.api.common.infra.util.StringChecker;
 import com.nyash.travellizermono.api.dto.OrderDTO;
 import com.nyash.travellizermono.api.entity.ticket.OrderEntity;
+import com.nyash.travellizermono.api.entity.ticket.TicketEntity;
 import com.nyash.travellizermono.api.factory.OrderDTOFactory;
 import com.nyash.travellizermono.api.service.TicketService;
 import lombok.AccessLevel;
@@ -46,9 +47,12 @@ public class OrderController {
     }
 
     @GetMapping(FETCH_ORDERS_FOR_CURRENT_USER)
-    public ResponseEntity<List<OrderDTO>> fetchOrdersForCurrentUser() {
-        //TODO: Assign a current user ID to the order
-        return null;
+    public ResponseEntity<List<OrderDTO>> fetchOrdersForCurrentUser(HttpServletRequest request) {
+
+        String userId = SecurityUtil.getUserID(request::getHeader);
+
+        List<OrderEntity> orders = ticketService.findOrders(userId);
+        return ResponseEntity.ok(orderDtoFactory.createOrderDTOList(orders));
     }
 
     @GetMapping(FETCH_ORDERS)

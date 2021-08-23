@@ -19,5 +19,5 @@ public interface TicketRepository extends JpaRepository<TicketEntity, Long> {
      * @param tripId
      * @return
      */
-    List<TicketEntity> findByTripId(@Param("tripId") String tripId);
+    List<TicketEntity> findByTripId(@Param("tripId") Long tripId);
 }

@@ -34,7 +34,7 @@ public class TicketServiceImpl implements TicketService {
 
 
     @Override
-    public List<TicketEntity> findTickets(String tripId) {
+    public List<TicketEntity> findTickets(Long tripId) {
         return ticketRepository.findByTripId(tripId);
     }
 
@@ -69,7 +69,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public TicketEntity buyTicket(final String tripId, final String clientName) {
+    public TicketEntity buyTicket(final Long tripId, final String clientName) {
 
         Checks.checkParameter(tripId != null, "Trip identifier should be not null");
 

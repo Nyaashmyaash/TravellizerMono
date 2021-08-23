@@ -12,7 +12,7 @@ import lombok.experimental.FieldDefaults;
 public class TicketDTO {
 
     @JsonProperty("trip_id")
-    String tripId;
+    Long tripId;
 
     String name;
 
