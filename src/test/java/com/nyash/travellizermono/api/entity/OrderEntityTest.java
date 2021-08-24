@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class OrderEntityTest {
 
-    OrderEntity order;
+    private OrderEntity order;
 
     @BeforeEach
     void setup() {
