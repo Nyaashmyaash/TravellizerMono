@@ -12,6 +12,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.ExtensionMethod;
 import lombok.experimental.FieldDefaults;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import java.util.List;
 
+/**
+ * {@link UserController} is REST controller that handles user management requests
+ *
+ * @author Nyash
+ */
 @RequiredArgsConstructor
 @ExtensionMethod(StringChecker.class)
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
@@ -26,14 +33,20 @@ import java.util.List;
 @Transactional
 public class UserController {
 
-    //TODO: add logging to user controller
-    //TODO: add commentaries
+    private static final Logger LOG = LoggerFactory.getLogger(OrderController.class);
+
     //TODO: add authorise
 
     UserRepository userRepository;
 
+    /**
+     * City DTO <-> Entity transformation
+     */
     UserDTOFactory userDTOFactory;
 
+    /**
+     * Endpoints
+     */
     public static final String FETCH_USERS = "api/users";
     public static final String CREATE_USER = "api/users";
     public static final String SHOW_USER = "api/users/{userId}";
@@ -41,6 +54,12 @@ public class UserController {
     public static final String DELETE_USER = "api/users/{userId}";
     //TODO: feature that promote user to Manager
 
+    /**
+     * Returns all users by filter
+     *
+     * @param filter
+     * @return
+     */
     @GetMapping(FETCH_USERS)
     public ResponseEntity<List<UserDTO>> fetchUsers(
             @RequestParam(defaultValue = "") String filter) {
@@ -52,6 +71,16 @@ public class UserController {
         return ResponseEntity.ok(userDTOFactory.createUserDTOList(users));
     }
 
+    /**
+     * Creates new user
+     *
+     * @param userName
+     * @param password
+     * @param firstName
+     * @param lastName
+     * @param userRole
+     * @return
+     */
     @PostMapping(CREATE_USER)
     public ResponseEntity<UserDTO> createUser(
             @RequestParam String userName,
@@ -86,8 +115,14 @@ public class UserController {
         return ResponseEntity.ok(userDTOFactory.createUserDTO(user));
     }
 
+    /**
+     * Returns user by ID
+     *
+     * @param userId
+     * @return
+     */
     @GetMapping(SHOW_USER)
-    public ResponseEntity<UserDTO> showUser (@PathVariable Long userId) {
+    public ResponseEntity<UserDTO> showUser(@PathVariable Long userId) {
 
         UserEntity user = userRepository.findById(userId).orElseThrow(NoSuchUserException::new);
 
@@ -95,12 +130,12 @@ public class UserController {
     }
 
     @PostMapping(UPDATE_USER)
-    public ResponseEntity<UserDTO> updateUser (@PathVariable Long userId,
-                                               @RequestParam String userName,
-                                               @RequestParam String password,
-                                               @RequestParam String firstName,
-                                               @RequestParam String lastName,
-                                               @RequestParam UserRole userRole) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long userId,
+                                              @RequestParam String userName,
+                                              @RequestParam String password,
+                                              @RequestParam String firstName,
+                                              @RequestParam String lastName,
+                                              @RequestParam UserRole userRole) {
 
         UserEntity user = userRepository.findById(userId).orElseThrow(NoSuchUserException::new);
 
@@ -115,6 +150,12 @@ public class UserController {
         return ResponseEntity.ok(userDTOFactory.createUserDTO(updatedUser));
     }
 
+    /**
+     * Delete user
+     *
+     * @param userId
+     * @return
+     */
     @DeleteMapping(DELETE_USER)
     public ResponseEntity<AckDTO> deleteUser(
             @PathVariable Long userId) {
@@ -122,6 +163,8 @@ public class UserController {
         if (userRepository.existsById(userId)) {
             userRepository.deleteById(userId);
         }
+
+        LOG.warn("User with id: " + userId + " was deleted");
 
         return ResponseEntity.ok(AckDTO.makeDefault(true));
     }

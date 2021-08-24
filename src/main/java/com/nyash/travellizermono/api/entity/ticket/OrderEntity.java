@@ -1,8 +1,11 @@
 package com.nyash.travellizermono.api.entity.ticket;
 
 import com.nyash.travellizermono.api.common.infra.exception.flow.ReservationException;
+import com.nyash.travellizermono.api.controller.OrderController;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -21,6 +24,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "ORDERS")
 public class OrderEntity {
+
+    private static final Logger LOG = LoggerFactory.getLogger(OrderController.class);
 
     public static final String FIELD_TRIP_ID = "tripId";
 
@@ -96,7 +101,7 @@ public class OrderEntity {
      */
     public void cancel(String reason) {
         if (dueDate.isBefore(LocalDateTime.now())) {
-            System.out.println("This order misses due date and should be automatically cancelled, id: " + id);
+            LOG.warn("This order misses due date and should be automatically cancelled, id: " + getId());
         }
         this.state = OrderState.CANCELLED;
         this.cancellationReason = reason;

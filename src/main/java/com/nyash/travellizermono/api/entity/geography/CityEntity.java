@@ -54,6 +54,10 @@ public class CityEntity {
     @JoinColumn(name = "STATION_ID")
     Set<StationEntity> stationEntities;
 
+    public CityEntity(final String name) {
+        this.name = name;
+    }
+
     public static CityEntity makeDefault(
             String name,
             String district,
@@ -71,11 +75,11 @@ public class CityEntity {
      *
      *
      */
-    public void addStation(StationEntity stationEntity) {
+    public void addStation(StationEntity station) {
         if (stationEntities == null) {
             stationEntities = new HashSet<>();
         }
-        stationEntities.add(stationEntity);
+        stationEntities.add(station);
 
     }
 

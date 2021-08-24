@@ -12,6 +12,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.ExtensionMethod;
 import lombok.experimental.FieldDefaults;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,13 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ *
+ *{@link TripController} is REST controller that handles trip requests
+ *
+ * @author Nyash
+ */
+
 @RequiredArgsConstructor
 @ExtensionMethod(StringChecker.class)
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
@@ -28,19 +37,34 @@ import java.util.List;
 @Transactional
 public class TripController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(OrderController.class);
+
     //TODO: available seats feature
     //TODO: add time parameter
 
     TripService tripService;
 
+    /**
+     *Trip DTO <-> Entity transformation
+     */
     TripDTOFactory tripDtoFactory;
 
     RouteRepository routeRepository;
 
+    /**
+     * Endpoints
+     */
     public static final String FETCH_TRIPS = "api/trips";
     public static final String CREATE_TRIP = "api/trips";
     public static final String DELETE_TRIP = "api/trips/{tripId}";
 
+    /**
+     * Creates new trip
+     *
+     * @param routeId
+     * @param date
+     * @return
+     */
     @PostMapping(CREATE_TRIP)
     public ResponseEntity<TripDTO> createTrip(
             @RequestParam Long routeId,
@@ -54,9 +78,16 @@ public class TripController {
         }
 
         trip = tripService.saveTrip(routeId, date);
+        LOG.info("New trip for route: " + routeId + " was added");
         return ResponseEntity.status(HttpStatus.CREATED).body(tripDtoFactory.createTripDTO(trip));
     }
 
+    /**
+     * Delete trip
+     *
+     * @param tripId
+     * @return
+     */
     @DeleteMapping(DELETE_TRIP)
     public ResponseEntity<AckDTO> deleteTrip(
             @PathVariable Long tripId) {
@@ -64,10 +95,17 @@ public class TripController {
         if (tripService.fetchTripById(tripId).isPresent()) {
             tripService.deleteTrip(tripId);
         }
+        LOG.warn("Trip with ID" + tripId + "was deleted");
 
         return ResponseEntity.ok(AckDTO.makeDefault(true));
     }
 
+    /**
+     * Returns all existing trips by route ID
+     *
+     * @param routeId
+     * @return
+     */
     @GetMapping(FETCH_TRIPS)
     public ResponseEntity<List<TripDTO>> fetchTrips(
             @RequestParam Long routeId) {

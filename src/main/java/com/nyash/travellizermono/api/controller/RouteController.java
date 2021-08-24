@@ -11,6 +11,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.ExtensionMethod;
 import lombok.experimental.FieldDefaults;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,13 @@ import javax.transaction.Transactional;
 import java.time.LocalTime;
 import java.util.List;
 
+/**
+ *
+ *{@link RouteController} is REST controller that handles routes requests
+ *
+ * @author Nyash
+ */
+
 @RequiredArgsConstructor
 @ExtensionMethod(StringChecker.class)
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
@@ -27,16 +36,29 @@ import java.util.List;
 @Transactional
 public class RouteController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(OrderController.class);
+
     RouteRepository routeRepository;
 
+    /**
+     * Route DTO <-> Entity transformation
+     */
     RouteDTOFactory routeDtoFactory;
 
+    /**
+     * Endpoints
+     */
     public static final String FETCH_ROUTE = "api/routes";
     public static final String CREATE_ROUTE = "api/routes";
     public static final String UPDATE_ROUTE = "api/routes/{routeId}";
     public static final String DELETE_ROUTE = "api/routes/{routeId}";
-    public static final String CREATE_TRIP = "api/routes/{routeId}/trips";
 
+    /**
+     *  Returns all existing routes by filter
+     *
+     * @param filter
+     * @return
+     */
     @GetMapping(FETCH_ROUTE)
     public ResponseEntity<List<RouteDTO>> fetchRoutes(
             @RequestParam(defaultValue = "") String filter) {
@@ -48,6 +70,16 @@ public class RouteController {
         return ResponseEntity.ok(routeDtoFactory.createRouteDTOList(routes));
     }
 
+    /**
+     * Creates new route
+     *
+     * @param start
+     * @param destination
+     * @param startTime
+     * @param endTime
+     * @param price
+     * @return
+     */
     @PostMapping(CREATE_ROUTE)
     public ResponseEntity<RouteDTO> createRoute(
             @RequestParam String start,
@@ -69,6 +101,17 @@ public class RouteController {
         return ResponseEntity.ok(routeDtoFactory.createRouteDTO(route));
     }
 
+    /**
+     * Updates route
+     *
+     * @param routeId
+     * @param start
+     * @param destination
+     * @param startTime
+     * @param endTime
+     * @param price
+     * @return
+     */
     @PostMapping(UPDATE_ROUTE)
     public ResponseEntity<RouteDTO> updateRoute(
             @PathVariable Long routeId,
@@ -94,6 +137,12 @@ public class RouteController {
         return ResponseEntity.ok(routeDtoFactory.createRouteDTO(route));
     }
 
+    /**
+     * Delete route
+     *
+     * @param routeId
+     * @return
+     */
     @DeleteMapping(DELETE_ROUTE)
     public ResponseEntity<AckDTO> deleteRoute(
             @PathVariable Long routeId) {
