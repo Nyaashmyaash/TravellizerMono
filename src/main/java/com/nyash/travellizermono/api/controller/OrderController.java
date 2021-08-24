@@ -12,13 +12,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.ExtensionMethod;
 import lombok.experimental.FieldDefaults;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-import java.awt.*;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -27,6 +28,8 @@ import java.util.List;
 @RestController
 @Transactional
 public class OrderController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(OrderController.class);
 
     TicketService ticketService;
 
