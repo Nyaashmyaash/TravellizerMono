@@ -16,6 +16,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.ExtensionMethod;
 import lombok.experimental.FieldDefaults;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +31,6 @@ import java.util.List;
  *
  * @author Nyash
  */
-
 @RequiredArgsConstructor
 @ExtensionMethod(StringChecker.class)
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
@@ -37,19 +38,19 @@ import java.util.List;
 @Transactional
 public class GeographicController {
 
-    //TODO: add logging to Geographic controller
+    private static final Logger LOG = LoggerFactory.getLogger(OrderController.class);
 
     CityRepository cityRepository;
 
     StationRepository stationRepository;
 
     /**
-     *City DTO <-> Entity transformation
+     * City DTO <-> Entity transformation
      */
     CityDTOFactory cityDtoFactory;
 
     /**
-     *Station DTO <-> Entity transformation
+     * Station DTO <-> Entity transformation
      */
     StationDTOFactory stationDtoFactory;
 
@@ -165,11 +166,8 @@ public class GeographicController {
             @PathVariable Long cityId,
             @RequestParam(defaultValue = "") String filter) {
 
-        CityEntity city = cityRepository
-                .findById(cityId)
-                .orElseThrow(() ->
-                        new NotFoundException(String.format("City with ID \"%s\" not found", cityId)));
-        //TODO: make geographic validation UTIL class
+        cityCheck(cityId);
+
         List<StationEntity> stations = stationRepository.findAllByCityId(cityId);
 
         return ResponseEntity.ok(stationDtoFactory.createStationDTOList(stations));
@@ -223,6 +221,7 @@ public class GeographicController {
                 ));
 
         city.addStation(station);
+        LOG.info("New station added to city " + stationName);
 
         return ResponseEntity.ok(stationDtoFactory.createStationDTO(station));
     }
@@ -275,6 +274,7 @@ public class GeographicController {
         station.setTransportType(transportType);
 
         stationRepository.saveAndFlush(station);
+        LOG.info("Station was updated " + stationName);
 
         return ResponseEntity.ok(stationDtoFactory.createStationDTO(station));
     }
@@ -296,6 +296,7 @@ public class GeographicController {
         if (stationRepository.existsById(stationId)) {
             stationRepository.deleteById(stationId);
         }
+        LOG.warn("Station with ID " + stationId + " was deleted");
 
         return ResponseEntity.ok(AckDTO.makeDefault(true));
     }
