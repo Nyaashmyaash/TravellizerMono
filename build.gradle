@@ -59,7 +59,11 @@ dependencies {
  * Testing dependencies
  */
 dependencies {
+
+    implementation 'org.projectlombok:lombok:1.18.18'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation group: 'org.springframework.restdocs', name: 'spring-restdocs-mockmvc', version: '2.0.4.RELEASE'
+
 }
 
 test {
