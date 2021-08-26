@@ -51,8 +51,8 @@ public class UserController {
     public static final String CREATE_USER = "api/users";
     public static final String SHOW_USER = "api/users/{userId}";
     public static final String UPDATE_USER = "api/users/{userId}";
+    public static final String SET_USER_ROLE = "api/users/{userId}";
     public static final String DELETE_USER = "api/users/{userId}";
-    //TODO: feature that promote user to Manager
 
     /**
      * Returns all users by filter
@@ -124,11 +124,42 @@ public class UserController {
     @GetMapping(SHOW_USER)
     public ResponseEntity<UserDTO> showUser(@PathVariable Long userId) {
 
-        UserEntity user = userRepository.findById(userId).orElseThrow(NoSuchUserException::new);
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(NoSuchUserException::new);
 
         return ResponseEntity.ok(userDTOFactory.createUserDTO(user));
     }
 
+    /**
+     * Changing user roles
+     *
+     * @param userId
+     * @param role
+     */
+    @PostMapping(SET_USER_ROLE)
+    public void setUserRole(
+            @PathVariable Long userId,
+            @RequestParam UserRole role) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(NoSuchUserException::new);
+
+        user.setUserRole(role);
+        userRepository.saveAndFlush(user);
+
+            LOG.info("User role with ID:" + userId + " changed to: " + role);
+    }
+
+    /**
+     * Updating user
+     *
+     * @param userId
+     * @param userName
+     * @param password
+     * @param firstName
+     * @param lastName
+     * @param userRole
+     * @return
+     */
     @PostMapping(UPDATE_USER)
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long userId,
                                               @RequestParam String userName,
