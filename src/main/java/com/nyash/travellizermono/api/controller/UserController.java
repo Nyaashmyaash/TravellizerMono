@@ -124,8 +124,7 @@ public class UserController {
     @GetMapping(SHOW_USER)
     public ResponseEntity<UserDTO> showUser(@PathVariable Long userId) {
 
-        UserEntity user = userRepository.findById(userId)
-                .orElseThrow(NoSuchUserException::new);
+        UserEntity user = userRepository.findById(userId).orElseThrow(NoSuchUserException::new);
 
         return ResponseEntity.ok(userDTOFactory.createUserDTO(user));
     }
@@ -140,8 +139,8 @@ public class UserController {
     public void setUserRole(
             @PathVariable Long userId,
             @RequestParam UserRole role) {
-        UserEntity user = userRepository.findById(userId)
-                .orElseThrow(NoSuchUserException::new);
+
+        UserEntity user = userRepository.findById(userId).orElseThrow(NoSuchUserException::new);
 
         user.setUserRole(role);
         userRepository.saveAndFlush(user);
