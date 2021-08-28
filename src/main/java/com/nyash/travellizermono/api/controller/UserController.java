@@ -5,7 +5,7 @@ import com.nyash.travellizermono.api.common.infra.util.StringChecker;
 import com.nyash.travellizermono.api.dto.AckDTO;
 import com.nyash.travellizermono.api.dto.UserDTO;
 import com.nyash.travellizermono.api.entity.user.UserEntity;
-import com.nyash.travellizermono.api.entity.user.UserRole;
+import com.nyash.travellizermono.api.entity.user.ERole;
 import com.nyash.travellizermono.api.factory.UserDTOFactory;
 import com.nyash.travellizermono.api.repository.UserRepository;
 import lombok.AccessLevel;
@@ -78,7 +78,7 @@ public class UserController {
      * @param password
      * @param firstName
      * @param lastName
-     * @param userRole
+     * @param eRole
      * @return
      */
     @PostMapping(CREATE_USER)
@@ -88,7 +88,7 @@ public class UserController {
             @RequestParam String firstName,
             @RequestParam String lastName,
 //            @RequestParam String registrationIp,
-            @RequestParam UserRole userRole) {
+            @RequestParam ERole eRole) {
 
         //TODO: user registration IP
 
@@ -108,7 +108,7 @@ public class UserController {
                         password,
                         firstName,
                         lastName,
-                        userRole
+                        eRole
                 )
         );
 
@@ -135,17 +135,17 @@ public class UserController {
      * @param userId
      * @param role
      */
-    @PostMapping(SET_USER_ROLE)
+    @PutMapping(SET_USER_ROLE)
     public void setUserRole(
             @PathVariable Long userId,
-            @RequestParam UserRole role) {
+            @RequestParam ERole role) {
 
         UserEntity user = userRepository.findById(userId).orElseThrow(NoSuchUserException::new);
 
-        user.setUserRole(role);
+        user.setERole(role);
         userRepository.saveAndFlush(user);
 
-            LOG.info("User role with ID:" + userId + " changed to: " + role);
+            LOG.info("User role with ID:{} changed to: {}", userId, role);
     }
 
     /**
@@ -164,8 +164,7 @@ public class UserController {
                                               @RequestParam String userName,
                                               @RequestParam String password,
                                               @RequestParam String firstName,
-                                              @RequestParam String lastName,
-                                              @RequestParam UserRole userRole) {
+                                              @RequestParam String lastName) {
 
         UserEntity user = userRepository.findById(userId).orElseThrow(NoSuchUserException::new);
 
@@ -173,7 +172,6 @@ public class UserController {
         user.setPassword(password);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setUserRole(userRole);
 
         UserEntity updatedUser = userRepository.saveAndFlush(user);
 

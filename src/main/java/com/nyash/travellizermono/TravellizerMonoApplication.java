@@ -13,8 +13,4 @@ public class TravellizerMonoApplication {
         SpringApplication.run(TravellizerMonoApplication.class, args);
     }
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }

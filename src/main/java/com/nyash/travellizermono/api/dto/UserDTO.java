@@ -1,7 +1,7 @@
 package com.nyash.travellizermono.api.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.nyash.travellizermono.api.entity.user.UserRole;
+import com.nyash.travellizermono.api.entity.user.ERole;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -41,5 +41,5 @@ public class UserDTO {
 
     @JsonProperty("user_role")
     @NonNull
-    UserRole userRole;
+    ERole eRole;
 }

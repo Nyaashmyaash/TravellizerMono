@@ -5,7 +5,7 @@ package com.nyash.travellizermono.api.entity.user;
  * @author Nyash
  *
  */
-public enum UserRole {
+public enum ERole {
     USER,
     MANAGER,
     ADMIN
