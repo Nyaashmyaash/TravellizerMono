@@ -45,7 +45,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public void makeReservation(OrderEntity order) {
-        orderRepository.save(order);
+        orderRepository.saveAndFlush(order);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class TicketServiceImpl implements TicketService {
 
         order.ifPresentOrElse(res -> {
             res.cancel(reason);
-            orderRepository.save(res);
+            orderRepository.saveAndFlush(res);
         }, () -> log.error("Invalid order identifier: {}", orderId));
     }
 
@@ -64,7 +64,7 @@ public class TicketServiceImpl implements TicketService {
 
         order.ifPresentOrElse(res -> {
             res.complete();
-            orderRepository.save(res);
+            orderRepository.saveAndFlush(res);
         }, () -> log.error("Invalid order identifier: {}", orderId));
     }
 
@@ -77,7 +77,7 @@ public class TicketServiceImpl implements TicketService {
         ticket.setTripId(tripId);
         ticket.generateUid(ticketNumberGenerator);
         ticket.setName(clientName);
-        ticketRepository.save(ticket);
+        ticketRepository.saveAndFlush(ticket);
 
         return ticket;
     }

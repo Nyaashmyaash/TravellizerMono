@@ -17,3 +17,20 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          google:
+#            client-id: 458290253646-9kc4geblrg0vn1tomu77ii8vt28fm151.apps.googleusercontent.com
+#            client-secret: j5pOCJ_cWYzztWQHZqSOl249
+#            access-token: https://www.googleapis.com/oauth2/v4/token
+#            user-authorisation-uri: https://accounts.google.com/o/oauth2/v2/auth
+#            client-authentication-scheme: form
+#            scope:
+#              - openid
+#              - email
+#              - profile
+
+
+

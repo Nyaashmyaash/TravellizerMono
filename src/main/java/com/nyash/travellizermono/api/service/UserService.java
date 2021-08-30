@@ -36,3 +36,4 @@ public interface UserService {
 
     List<UserEntity> findAll();
 }
+

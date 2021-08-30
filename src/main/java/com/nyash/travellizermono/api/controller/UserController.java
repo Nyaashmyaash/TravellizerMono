@@ -5,7 +5,7 @@ import com.nyash.travellizermono.api.common.infra.util.StringChecker;
 import com.nyash.travellizermono.api.dto.AckDTO;
 import com.nyash.travellizermono.api.dto.UserDTO;
 import com.nyash.travellizermono.api.entity.user.UserEntity;
-import com.nyash.travellizermono.api.entity.user.UserRole;
+import com.nyash.travellizermono.api.entity.user.ERole;
 import com.nyash.travellizermono.api.factory.UserDTOFactory;
 import com.nyash.travellizermono.api.repository.UserRepository;
 import lombok.AccessLevel;
@@ -51,8 +51,8 @@ public class UserController {
     public static final String CREATE_USER = "api/users";
     public static final String SHOW_USER = "api/users/{userId}";
     public static final String UPDATE_USER = "api/users/{userId}";
+    public static final String SET_USER_ROLE = "api/users/{userId}";
     public static final String DELETE_USER = "api/users/{userId}";
-    //TODO: feature that promote user to Manager
 
     /**
      * Returns all users by filter
@@ -78,7 +78,7 @@ public class UserController {
      * @param password
      * @param firstName
      * @param lastName
-     * @param userRole
+     * @param eRole
      * @return
      */
     @PostMapping(CREATE_USER)
@@ -88,7 +88,7 @@ public class UserController {
             @RequestParam String firstName,
             @RequestParam String lastName,
 //            @RequestParam String registrationIp,
-            @RequestParam UserRole userRole) {
+            @RequestParam ERole eRole) {
 
         //TODO: user registration IP
 
@@ -108,7 +108,7 @@ public class UserController {
                         password,
                         firstName,
                         lastName,
-                        userRole
+                        eRole
                 )
         );
 
@@ -129,13 +129,42 @@ public class UserController {
         return ResponseEntity.ok(userDTOFactory.createUserDTO(user));
     }
 
+    /**
+     * Changing user roles
+     *
+     * @param userId
+     * @param role
+     */
+    @PutMapping(SET_USER_ROLE)
+    public void setUserRole(
+            @PathVariable Long userId,
+            @RequestParam ERole role) {
+
+        UserEntity user = userRepository.findById(userId).orElseThrow(NoSuchUserException::new);
+
+        user.setERole(role);
+        userRepository.saveAndFlush(user);
+
+            LOG.info("User role with ID:{} changed to: {}", userId, role);
+    }
+
+    /**
+     * Updating user
+     *
+     * @param userId
+     * @param userName
+     * @param password
+     * @param firstName
+     * @param lastName
+     * @param userRole
+     * @return
+     */
     @PostMapping(UPDATE_USER)
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long userId,
                                               @RequestParam String userName,
                                               @RequestParam String password,
                                               @RequestParam String firstName,
-                                              @RequestParam String lastName,
-                                              @RequestParam UserRole userRole) {
+                                              @RequestParam String lastName) {
 
         UserEntity user = userRepository.findById(userId).orElseThrow(NoSuchUserException::new);
 
@@ -143,7 +172,6 @@ public class UserController {
         user.setPassword(password);
         user.setFirstName(firstName);
         user.setLastName(lastName);
-        user.setUserRole(userRole);
 
         UserEntity updatedUser = userRepository.saveAndFlush(user);
 

@@ -69,21 +69,21 @@ public class UserEntity {  //TODO: Users e-mail integration
      * User role
      */
     @Enumerated(EnumType.STRING)
-    UserRole userRole;
+    ERole eRole;
 
     public static UserEntity makeDefault(
             String userName,
             String password,
             String firstName,
             String lastName,
-            UserRole userRole) {
+            ERole eRole) {
 
         return builder()
                 .userName(userName)
                 .password(password)
                 .firstName(firstName)
                 .lastName(lastName)
-                .userRole(userRole)
+                .eRole(eRole)
                 .build();
     }
 }
