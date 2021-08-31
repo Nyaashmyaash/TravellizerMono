@@ -1,12 +1,15 @@
 package com.nyash.travellizermono.security.config;
 
-import com.nyash.travellizermono.api.service.impl.UserDetailsServiceImpl;
+import com.nyash.travellizermono.security.service.UserDetailsServiceImpl;
+import com.nyash.travellizermono.security.config.jwt.AuthEntryPointJwt;
+import com.nyash.travellizermono.security.config.jwt.AuthTokenFilter;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,9 +31,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     AuthEntryPointJwt unauthorizedHandler;
 
+    AuthTokenFilter authenticationJwtTokenFilter;
+
     @Bean
-    public AuthTokenFilter authenticationJwtTokenFilter() {
-        return new AuthTokenFilter();
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Bean
@@ -57,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api", "/error", "/webjars/**").permitAll()
                 .anyRequest().authenticated();
 
-        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authenticationJwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
 }

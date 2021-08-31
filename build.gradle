@@ -32,6 +32,17 @@ dependencies {
 }
 
 /**
+ * Security dependencies
+ */
+dependencies {
+    implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+//    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+//    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+//    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+
+}
+
+/**
  * Database dependencies
  */
 dependencies {
@@ -48,6 +59,8 @@ dependencies {
     implementation group: 'com.ibm.icu', name: 'icu4j', version: '69.1'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.3'
     implementation 'org.projectlombok:lombok:1.18.18'
+    implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.4.0-b180830.0359'
+    implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
 
 }
 

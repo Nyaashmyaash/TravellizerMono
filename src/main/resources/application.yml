@@ -7,6 +7,11 @@ logging:
 server:
   port: 9125
 
+application:
+  jwt:
+    jwtSecret: NyashMyashSecretKeyNyashMyashSecretKeyNyashMyashSecretKeyNyashMyashSecretKeyNyashMyashSecretKey
+    jwtExpirationMs: 3600000
+
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -17,6 +22,10 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+
+
+
+
 #  security:
 #    oauth2:
 #      client:
