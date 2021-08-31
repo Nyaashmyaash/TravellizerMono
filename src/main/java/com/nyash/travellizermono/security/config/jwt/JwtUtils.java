@@ -6,6 +6,8 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,8 @@ import java.util.Date;
 @Component
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class JwtUtils {
+
+    private static final Logger LOG = LoggerFactory.getLogger(JwtUtils.class);
 
     @Value("${application.jwt.jwtSecret}")
     String jwtSecret;
@@ -35,10 +39,8 @@ public class JwtUtils {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jwt);
             return true;
-        } catch (MalformedJwtException e) {
-            System.err.println(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            System.err.println(e.getMessage());
+        } catch (MalformedJwtException | IllegalArgumentException e) {
+            LOG.error(e.getMessage());
         }
 
         return false;
