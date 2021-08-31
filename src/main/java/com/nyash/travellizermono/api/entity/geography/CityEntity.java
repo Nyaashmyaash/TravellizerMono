@@ -95,5 +95,4 @@ public class CityEntity {
         }
         stationEntities.remove(station);
     }
-
 }

@@ -5,6 +5,8 @@ import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Entity that encapsulates user of the application
@@ -19,7 +21,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "USERS")
+@Table(name = "USERS", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "userName"),
+        @UniqueConstraint(columnNames = "email")
+})
 public class UserEntity {  //TODO: Users e-mail integration
 
     /**
@@ -34,7 +39,7 @@ public class UserEntity {  //TODO: Users e-mail integration
      */
     @NonNull
     @Column(name = "USER_NAME", unique = true, length = 24)
-    String userName;
+    String username;
 
     /**
      * User password
@@ -43,47 +48,26 @@ public class UserEntity {  //TODO: Users e-mail integration
     @Column(name = "PASSWORD")
     String password;
 
-    @NonNull
-    @Column(name = "FIRST_NAME", length = 24)
-    String firstName;
+    //Dont need first and last name now.
+
+//    @NonNull
+//    @Column(name = "FIRST_NAME", length = 24)
+//    String firstName;
+//
+//    @NonNull
+//    @Column(name = "LAST_NAME")
+//    String lastName;
 
     @NonNull
-    @Column(name = "LAST_NAME")
-    String lastName;
-
-    /**
-     * Timestamp of user registration
-     */
-
-    @Builder.Default
-    @Column(name = "CREATED_AT")
-    LocalDateTime createdAt = LocalDateTime.now();
-
-//    /**
-//     * IP of user registration
-//     */
-//    @Column(name = "REGISTRATION_IP", length = 30)
-//    String registrationIp;
+    @Column(name = "EMAIL")
+    String email;
 
     /**
      * User role
      */
-    @Enumerated(EnumType.STRING)
-    ERole eRole;
-
-    public static UserEntity makeDefault(
-            String userName,
-            String password,
-            String firstName,
-            String lastName,
-            ERole eRole) {
-
-        return builder()
-                .userName(userName)
-                .password(password)
-                .firstName(firstName)
-                .lastName(lastName)
-                .eRole(eRole)
-                .build();
-    }
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "USER_ROLES",
+            joinColumns = @JoinColumn(name = "USER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
+    Set<Role> roles = new HashSet<>();
 }
