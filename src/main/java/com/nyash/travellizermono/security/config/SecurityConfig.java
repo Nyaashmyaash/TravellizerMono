@@ -1,4 +1,4 @@
-package com.nyash.travellizermono.security;
+package com.nyash.travellizermono.security.config;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -32,9 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api", "/error", "/webjars/**").permitAll()
-                .and()
-                .
+                .antMatchers(HttpMethod.GET, "/api", "/error", "/webjars/**").permitAll();
     }
 
 

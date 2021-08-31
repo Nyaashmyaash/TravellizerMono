@@ -39,7 +39,7 @@ public class UserEntity {  //TODO: Users e-mail integration
      */
     @NonNull
     @Column(name = "USER_NAME", unique = true, length = 24)
-    String userName;
+    String username;
 
     /**
      * User password
@@ -48,13 +48,15 @@ public class UserEntity {  //TODO: Users e-mail integration
     @Column(name = "PASSWORD")
     String password;
 
-    @NonNull
-    @Column(name = "FIRST_NAME", length = 24)
-    String firstName;
+    //Dont need first and last name now.
 
-    @NonNull
-    @Column(name = "LAST_NAME")
-    String lastName;
+//    @NonNull
+//    @Column(name = "FIRST_NAME", length = 24)
+//    String firstName;
+//
+//    @NonNull
+//    @Column(name = "LAST_NAME")
+//    String lastName;
 
     @NonNull
     @Column(name = "EMAIL")
