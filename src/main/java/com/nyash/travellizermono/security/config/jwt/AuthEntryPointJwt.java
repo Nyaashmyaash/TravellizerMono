@@ -1,7 +1,6 @@
 package com.nyash.travellizermono.security.config.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nyash.travellizermono.api.controller.OrderController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;

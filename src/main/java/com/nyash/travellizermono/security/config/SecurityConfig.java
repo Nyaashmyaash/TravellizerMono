@@ -1,6 +1,6 @@
 package com.nyash.travellizermono.security.config;
 
-import com.nyash.travellizermono.api.service.impl.UserDetailsServiceImpl;
+import com.nyash.travellizermono.security.service.UserDetailsServiceImpl;
 import com.nyash.travellizermono.security.config.jwt.AuthEntryPointJwt;
 import com.nyash.travellizermono.security.config.jwt.AuthTokenFilter;
 import lombok.AccessLevel;

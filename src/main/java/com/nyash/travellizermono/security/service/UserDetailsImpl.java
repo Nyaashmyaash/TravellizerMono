@@ -1,4 +1,4 @@
-package com.nyash.travellizermono.api.service.impl;
+package com.nyash.travellizermono.security.service;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nyash.travellizermono.api.entity.user.UserEntity;

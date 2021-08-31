@@ -1,9 +1,7 @@
 package com.nyash.travellizermono.security.config.jwt;
 
-import com.nyash.travellizermono.api.service.impl.UserDetailsServiceImpl;
+import com.nyash.travellizermono.security.service.UserDetailsServiceImpl;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.slf4j.Logger;

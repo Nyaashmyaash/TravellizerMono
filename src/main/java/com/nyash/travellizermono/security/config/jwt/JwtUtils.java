@@ -1,6 +1,6 @@
 package com.nyash.travellizermono.security.config.jwt;
 
-import com.nyash.travellizermono.api.service.impl.UserDetailsImpl;
+import com.nyash.travellizermono.security.service.UserDetailsImpl;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
