@@ -1,14 +1,12 @@
-package com.nyash.travellizermono.api.dto;
+package com.nyash.travellizermono.security;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.Set;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SignupRequest {
 
