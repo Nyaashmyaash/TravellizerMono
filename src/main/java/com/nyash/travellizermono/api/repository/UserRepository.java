@@ -18,6 +18,10 @@ public interface UserRepository extends JpaRepository <UserEntity, Long> {
 
     Optional<UserEntity> findByUsername(String userName);
 
+    Boolean existsByUsername(String username);
+
+    Boolean existsByEmail(String email);
+
 
 //    @Query("SELECT u FROM UserEntity u " +
 //            "WHERE :isFiltered = FALSE " +

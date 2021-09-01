@@ -1,9 +1,13 @@
 package com.nyash.travellizermono.api.controller;
 
+import com.nyash.travellizermono.api.entity.user.ERole;
+import com.nyash.travellizermono.api.entity.user.Role;
+import com.nyash.travellizermono.api.entity.user.UserEntity;
 import com.nyash.travellizermono.api.repository.RoleRepository;
 import com.nyash.travellizermono.api.repository.UserRepository;
 import com.nyash.travellizermono.security.JwtResponse;
 import com.nyash.travellizermono.security.LoginRequest;
+import com.nyash.travellizermono.security.MessageResponse;
 import com.nyash.travellizermono.security.SignupRequest;
 import com.nyash.travellizermono.security.config.jwt.JwtUtils;
 import com.nyash.travellizermono.security.service.UserDetailsImpl;
@@ -20,7 +24,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -69,6 +75,60 @@ public class AuthController {
     @PostMapping(SIGN_UP)
     public ResponseEntity<?> registerUser(
             @Valid @RequestBody SignupRequest signupRequest) {
-        return null;
+
+        if (userRepository.existsByUsername(signupRequest.getUserName())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Username is exist"));
+        }
+
+        if (userRepository.existsByEmail(signupRequest.getEmail())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Email is exist"));
+        }
+
+        UserEntity user = new UserEntity(
+                signupRequest.getUserName(),
+                signupRequest.getEmail(),
+                passwordEncoder.encode(signupRequest.getPassword()));
+
+        Set<String> reqRoles = signupRequest.getRoles();
+        Set<Role> roles = new HashSet<>();
+
+        if (reqRoles == null) {
+            Role userRole = roleRepository
+                    .findByRoleName(ERole.USER)
+                    .orElseThrow(() -> new RuntimeException("Error, Role USER is not found"));
+            roles.add(userRole);
+        } else {
+            reqRoles.forEach(r -> {
+                switch (r) {
+                    case "admin":
+                        Role adminRole = roleRepository
+                                .findByRoleName(ERole.ADMIN)
+                                .orElseThrow(() -> new RuntimeException("Error, Role ADMIN is not found"));
+                        roles.add(adminRole);
+
+                        break;
+                    case "manager":
+                        Role managerRole = roleRepository
+                                .findByRoleName(ERole.MANAGER)
+                                .orElseThrow(() -> new RuntimeException("Error, Role MANAGER is not found"));
+                        roles.add(managerRole);
+
+                        break;
+
+                    default:
+                        Role userRole = roleRepository
+                                .findByRoleName(ERole.USER)
+                                .orElseThrow(() -> new RuntimeException("Error, Role USER is not found"));
+                }
+            });
+        }
+        user.setRoles(roles);
+        userRepository.save(user)
+
+        return ResponseEntity.ok(new MessageResponse("User CREATED"));
     }
 }
