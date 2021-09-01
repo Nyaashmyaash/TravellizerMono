@@ -1,6 +1,5 @@
 package com.nyash.travellizermono.security;
 
-import com.nyash.travellizermono.api.entity.user.Role;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -13,7 +12,6 @@ public class JwtResponse {
 
     String token;
 
-
     String type = "Bearer";
 
     Long id;
@@ -22,9 +20,9 @@ public class JwtResponse {
 
     String email;
 
-    List<Role> roles;
+    List<String> roles;
 
-    public JwtResponse(String token, Long id, String username, String email, List<Role> roles) {
+    public JwtResponse(String token, Long id, String username, String email, List<String> roles) {
         this.token = token;
         this.id = id;
         this.username = username;

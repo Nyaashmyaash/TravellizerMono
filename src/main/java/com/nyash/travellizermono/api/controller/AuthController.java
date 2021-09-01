@@ -2,18 +2,26 @@ package com.nyash.travellizermono.api.controller;
 
 import com.nyash.travellizermono.api.repository.RoleRepository;
 import com.nyash.travellizermono.api.repository.UserRepository;
+import com.nyash.travellizermono.security.JwtResponse;
 import com.nyash.travellizermono.security.LoginRequest;
 import com.nyash.travellizermono.security.SignupRequest;
 import com.nyash.travellizermono.security.config.jwt.JwtUtils;
+import com.nyash.travellizermono.security.service.UserDetailsImpl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -37,7 +45,25 @@ public class AuthController {
     @PostMapping(SIGN_IN)
     public ResponseEntity<?> authUser(
             @Valid @RequestBody LoginRequest loginRequest) {
-        return null;
+
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(
+                        loginRequest.getUserName(),
+                        loginRequest.getPassword()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(new JwtResponse(jwt,
+                userDetails.getUserId(),
+                userDetails.getUsername(),
+                userDetails.getEmail(),
+                roles));
     }
 
     @PostMapping(SIGN_UP)
