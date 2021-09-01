@@ -70,4 +70,10 @@ public class UserEntity {  //TODO: Users e-mail integration
             joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
     Set<Role> roles = new HashSet<>();
+
+    public UserEntity(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 }
