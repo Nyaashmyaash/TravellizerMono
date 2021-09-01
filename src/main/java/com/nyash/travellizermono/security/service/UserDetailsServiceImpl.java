@@ -8,7 +8,9 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 
+@Component
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -18,7 +20,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity user = userRepository
-                .findByUserName(username)
+                .findByUsername(username)
                 .orElseThrow(() ->
                         new UsernameNotFoundException("Not found user with username: " + username));
         return UserDetailsImpl.build(user);

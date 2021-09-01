@@ -22,8 +22,8 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "USERS", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "userName"),
-        @UniqueConstraint(columnNames = "email")
+        @UniqueConstraint(columnNames = "USER_NAME"),
+        @UniqueConstraint(columnNames = "EMAIL")
 })
 public class UserEntity {  //TODO: Users e-mail integration
 

@@ -16,14 +16,14 @@ import java.util.Optional;
  */
 public interface UserRepository extends JpaRepository <UserEntity, Long> {
 
-    Optional<UserEntity> findByUserName(@Param("userName") String userName);
+    Optional<UserEntity> findByUsername(String userName);
 
 
-    @Query("SELECT u FROM UserEntity u " +
-            "WHERE :isFiltered = FALSE " +
-            "OR (LOWER(u.username) LIKE LOWER(CONCAT('%', :filter, '%'))" +
-            "OR LOWER(u.firstName) LIKE LOWER(CONCAT('%', :filter, '%'))" +
-            "OR LOWER(u.lastName) LIKE LOWER(CONCAT('%', :filter, '%')))" +
-            "ORDER BY u.username, u.lastName, u.firstName")
-    List<UserEntity> findAllByFilter(boolean isFiltered, String filter);
+//    @Query("SELECT u FROM UserEntity u " +
+//            "WHERE :isFiltered = FALSE " +
+//            "OR (LOWER(u.username) LIKE LOWER(CONCAT('%', :filter, '%'))" +
+//            "OR LOWER(u.firstName) LIKE LOWER(CONCAT('%', :filter, '%'))" +
+//            "OR LOWER(u.lastName) LIKE LOWER(CONCAT('%', :filter, '%')))" +
+//            "ORDER BY u.username, u.lastName, u.firstName")
+//    List<UserEntity> findAllByFilter(boolean isFiltered, String filter);
 }
