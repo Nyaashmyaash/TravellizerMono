@@ -66,6 +66,8 @@ public class GeographicController {
     public static final String UPDATE_STATION = "api/cities/{cityId}/stations/{stationId}";
     public static final String DELETE_STATION = "api/cities/{cityId}/stations/{stationId}";
 
+    //TODO: Implement HATEOAS
+
     /**
      * Returns all existing cities by filter
      *
@@ -96,6 +98,11 @@ public class GeographicController {
             @RequestParam String name,
             @RequestParam String district,
             @RequestParam String region) {
+
+        cityRepository
+                .findByName(name)
+                .orElseThrow(() ->
+                        new NotFoundException(String.format("City \"%s\" already exist", name)));
 
         CityEntity city = cityRepository.saveAndFlush(
                 CityEntity.makeDefault(
