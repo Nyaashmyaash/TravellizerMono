@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import lombok.NonNull;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Defines CRUD methods to access City objects in the persistent storage
@@ -18,4 +19,6 @@ public interface CityRepository extends JpaRepository<CityEntity, Long> {
             "OR (LOWER(c.name) LIKE LOWER(CONCAT('%', :filter, '%')))" +
             "ORDER BY c.name")
     List<CityEntity> findAllByFilter(boolean isFiltered, String filter);
+
+   Optional<CityEntity> findByName(String name);
 }
